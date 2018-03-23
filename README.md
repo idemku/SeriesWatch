@@ -3,6 +3,7 @@ Projekt eszközök beadandó
 
 ## Telepítés / Használat
 Telepítsd fel a Python 3-at: https://www.python.org/downloads/
+
 A verziót telepítés után így tudod ellenőrizni:
 ```
 python --version
