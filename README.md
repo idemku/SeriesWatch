@@ -13,7 +13,8 @@ Nyiss egy parancssort/terminált, telepítsd a Django-t és ellenőrizd a verzi�
 pip install django
 python -m django --version
 ```
-Ahhoz, hogy működjenek a lekérdezések, mielőtt elindítod a szervert, írd be a MovieDB api kulcsot a SeriesWatch/series/views.py fájlban az **_api_key = "minta1"_** változóba a **_minta1_** helyére
+Ahhoz, hogy működjenek a lekérdezések, mielőtt elindítod a szervert, hozz létre a főkönyvtárba egy
+**conf.cnf** fájlt a **conf_example.cnf** mintájára és ebben add meg az api_key-t
 
 
 A projekt főkönyvtárában (SeriesWatch) a következő paranccsal tudod elindítani a szervert:
