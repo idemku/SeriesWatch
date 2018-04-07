@@ -39,6 +39,6 @@ Quit the server with CONTROL-C.
 A böngésződből itt fogod elérni: http://127.0.0.1:8000/
 
 
-----
+---
 
-Design egyenlőre nem a fő index.html-ről érhető el hanem index2.html-ről teszt jelleggel
+Design most már elérhető az index.html-en keresztül, egyelőre nem túl jól működik.
