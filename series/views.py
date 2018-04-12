@@ -20,6 +20,8 @@ def index(request):
             context = search_tv(title)
     except KeyError:
         context = {"name": "", "vote_average": "", "first_air_date": "", "next_episode_date": "", "overview": ""}
+    except IndexError:
+        context = {"name": "Nincs ilyen sorozat", "vote_average": "", "first_air_date": "", "next_episode_date": "", "overview": ""}
     return render(request, 'series/index.html', context)
 
 
