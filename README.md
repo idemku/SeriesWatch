@@ -17,6 +17,17 @@ Ahhoz, hogy működjenek a lekérdezések, mielőtt elindítod a szervert, hozz 
 **conf.cnf** fájlt a **conf_example.cnf** mintájára és ebben add meg az api_key-t
 
 
+Hozd létre az adatbázis és a szükséges adattáblákat a következő parancsokkal:
+```
+python manage.py makemigrations
+python manage.py migrate
+```
+Így tudsz létrehozni admin fiókot:
+```
+python manage.py createsuperuser
+```
+_(Teszt fiók létrehozása lejebb)_
+
 A projekt főkönyvtárában (SeriesWatch) a következő paranccsal tudod elindítani a szervert:
 ```
 python manage.py runserver
@@ -37,6 +48,9 @@ Quit the server with CONTROL-C.
 ```
 
 A böngésződből itt fogod elérni: http://127.0.0.1:8000/
+
+
+Ez után a http://127.0.0.1:8000/admin felületen a létrehozott fiókkal bejelentkezve a Users táblában tudsz létrehozni teszt fiókokat.
 
 
 ---
