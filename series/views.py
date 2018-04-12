@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from django.contrib.auth.decorators import login_required
 import http.client, urllib.parse, json, configparser, datetime
 
 config = configparser.ConfigParser()
@@ -23,6 +24,11 @@ def index(request):
     except IndexError:
         context = {"name": "Nincs ilyen sorozat", "vote_average": "", "first_air_date": "", "next_episode_date": "", "overview": ""}
     return render(request, 'series/index.html', context)
+
+
+@login_required
+def my_series(request):
+    return render(request, 'series/my-series.html', {})
 
 
 def search_tv(title):

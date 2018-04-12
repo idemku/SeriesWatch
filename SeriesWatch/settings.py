@@ -121,3 +121,9 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 TEMPLATE_DIRS = (os.path.join(BASE_DIR,  'templates'),)
+
+
+# Login
+
+LOGIN_URL = '/login/'
+LOGIN_REDIRECT_URL = '/my-series/'
