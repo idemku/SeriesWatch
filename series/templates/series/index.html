@@ -44,7 +44,7 @@
                            <a href="javascript:location.reload();">Kereső</a>
                            <a href="#news">Hírek</a>
                            <a href="#myseries">Sorozataim</a>
-                           <a href="#" onclick="document.getElementById('id01').style.display='block'">Login</a>
+                           <a href="#" onclick="document.getElementById('id01').style.display='block'">{{ user }}</a>
                            <a href="javascript:void(0);" class="icon" onclick="myFunction()">&#9776;</a>
                         </div>
                      </nav>
@@ -92,13 +92,17 @@
                   <div class="w3-container">
                      <span onclick="document.getElementById('id01').style.display='none'" 
                         class="w3-button w3-display-topright">&times;</span>
-                     <form class="w3-container" action="/login.php" style="margin-top:20px;">
+                     <form class="w3-container" action="/login/" method="post" style="margin-top:20px;">
+                        {% csrf_token %}
                         <div class="w3-section">
                            <label><b>Felhasználónév</b></label>
                            <input class="w3-input w3-border w3-margin-bottom" type="text" placeholder="Felhasználónév" name="usrname" required>
                            <label><b>Jelszó</b></label>
-                           <input class="w3-input w3-border w3-margin-bottom" type="text" placeholder="Jelszó" name="pwd" required>
+                           <input class="w3-input w3-border w3-margin-bottom" type="password" placeholder="Jelszó" name="pwd" required>
                            <button class="w3-button w3-block w3-green w3-section w3-padding" type="submit">Belépés</button>
+                            {% if loginerror %}
+                                <p>{{ loginerror }}</p>
+                            {% endif %}
                         </div>
                      </form>
                      <div class="w3-container w3-border-top w3-padding-16">

@@ -1,5 +1,6 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth import authenticate, login, logout
 import http.client, urllib.parse, json, configparser, datetime
 
 config = configparser.ConfigParser()
@@ -13,22 +14,50 @@ language = config["SW"]["language"]
 
 
 def index(request):
+    if request.user.is_authenticated:
+        user = request.user.username
+    else:
+        user = "LOGIN"
+
+    context = {"name": "", "vote_average": "", "first_air_date": "", "next_episode_date": "", "overview": ""}
+
     try:
-        title = request.POST['title']
-        if title == "":
-            context = {"name": "", "vote_average": "", "first_air_date": "", "next_episode_date": "", "overview": ""}
-        else:
+        title = request.POST["title"]
+        if title != "":
             context = search_tv(title)
     except KeyError:
-        context = {"name": "", "vote_average": "", "first_air_date": "", "next_episode_date": "", "overview": ""}
+        print("GET-el lett megnyitva az index.")
     except IndexError:
-        context = {"name": "Nincs ilyen sorozat", "vote_average": "", "first_air_date": "", "next_episode_date": "", "overview": ""}
-    return render(request, 'series/index.html', context)
+        context["name"] = "Nincs ilyen sorozat"
+
+    context["user"] = user
+    return render(request, "series/index.html", context)
+
+
+def login_view(request):
+    try:
+        user = request.POST["usrname"]
+        passw = request.POST["pwd"]
+        authenticated = authenticate(request, username=user, password=passw)
+
+        if authenticated is not None:
+            login(request, authenticated)
+            return redirect("index")
+        else:
+            context = {"loginerror": "Nem megfelelő felhasználónév/jelszó"}
+            return render(request, "series/index.html", context)
+    except KeyError:
+        return render(request, "series/index.html", {})
+
+
+def logout_view(request):
+    logout(request)
+    return redirect("index")
 
 
 @login_required
 def my_series(request):
-    return render(request, 'series/my-series.html', {})
+    return render(request, "series/my-series.html", {})
 
 
 def search_tv(title):
