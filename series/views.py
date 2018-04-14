@@ -1,5 +1,7 @@
+from django.core.exceptions import ObjectDoesNotExist
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
 import http.client, urllib.parse, json, configparser, datetime
 
@@ -14,7 +16,8 @@ language = config["SW"]["language"]
 
 
 def index(request):
-    if request.user.is_authenticated:
+    if request.user.is_authenticated and isinstance(request.user, User):
+        # TODO: Ez itt valamiért még mindig beadja anonym usernél...
         user = request.user.username
     else:
         user = "LOGIN"
@@ -47,12 +50,33 @@ def login_view(request):
             context = {"loginerror": "Nem megfelelő felhasználónév/jelszó"}
             return render(request, "series/index.html", context)
     except KeyError:
-        return render(request, "series/index.html", {})
+        return redirect("index")
 
 
 def logout_view(request):
     logout(request)
     return redirect("index")
+
+
+def register_view(request):
+    try:
+        user = request.POST["usrname-r"]
+        email = request.POST["email-r"]
+        pass1 = request.POST["pwd-r"]
+        pass2 = request.POST["pwd-r2"]
+        if pass1 != pass2:
+            context = {"regerror": "A megadott jelszavak nem egyeznek meg."}
+            return render(request, "series/index.html", context)
+        else:
+            try:
+                dbuser = User.objects.get(username=user)  # Ha ez lefut, akkor már van ilyen user a db-ben
+                context = {"regerror": "Már van ilyen nevű felhasználó: " + dbuser.username}
+                return render(request, "series/index.html", context)
+            except ObjectDoesNotExist:
+                User.objects.create_user(user, email, pass1)
+            return redirect("index")
+    except KeyError:
+        return redirect("index")
 
 
 @login_required

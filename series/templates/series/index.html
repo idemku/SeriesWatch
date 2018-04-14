@@ -117,7 +117,8 @@
                   <div class="w3-container">
                      <span onclick="document.getElementById('id01').style.display='none'; document.getElementById('id02').style.display='none'" 
                         class="w3-button w3-display-topright">&times;</span>
-                     <form class="w3-container" style="margin-top:20px;" action="/register.php">
+                     <form class="w3-container" style="margin-top:20px;" action="/register/" method="POST">
+                        {% csrf_token %}
                         <h2>Regisztráció</h2>
                         <div class="w3-section">
                            <label><b>Felhasználónév</b></label>
@@ -125,10 +126,13 @@
                            <label><b>E-mail cím</b></label>
                            <input class="w3-input w3-border w3-margin-bottom" type="email" placeholder="E-mail cím" name="email-r" required>
                            <label><b>Jelszó</b></label>
-                           <input class="w3-input w3-border w3-margin-bottom" type="text" placeholder="Jelszó" name="pwd-r" required>
+                           <input class="w3-input w3-border w3-margin-bottom" type="password" placeholder="Jelszó" name="pwd-r" required>
                            <label><b>Jelszó újra</b></label>
-                           <input class="w3-input w3-border w3-margin-bottom" type="text" placeholder="Jelszó" name="pwd-r2" required>
+                           <input class="w3-input w3-border w3-margin-bottom" type="password" placeholder="Jelszó" name="pwd-r2" required>
                            <button class="w3-button w3-block w3-green w3-section" type="submit">Regisztráció</button>
+                            {% if regerror %}
+                                <p>{{ regerror }}</p>
+                            {% endif %}
                         </div>
                      </form>
                   </div>
