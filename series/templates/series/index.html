@@ -15,7 +15,7 @@
 	<meta charset="UTF-8">
 	<!-- Site Title -->
 	<title>SeriesNotifier</title>
-
+	<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 	<link href="https://fonts.googleapis.com/css?family=Poppins:300,500,600" rel="stylesheet">
 		<!--
 		CSS
@@ -43,10 +43,10 @@
 						<div class="right-bar d-flex align-items-center">
 							<nav>
 							<div class="topnav" id="myTopnav">
-							  <a href="#home" class="active">Home</a>
-							  <a href="#news">News</a>
-							  <a href="#contact">Contact</a>
-							  <a href="../registration/login.html">Login</a>
+							  <a href="javascript:location.reload();">Kereső</a>
+							  <a href="#news">Hírek</a>
+							  <a href="#myseries">Sorozataim</a>
+							  <a href="#" onclick="document.getElementById('id01').style.display='block'">Login</a>
 							  <a href="javascript:void(0);" class="icon" onclick="myFunction()">&#9776;</a>
 							</div>
 						</nav>
@@ -60,7 +60,7 @@
 		<section class="banner-area relative">
 			<div class="container">
 				<div class="row justify-content-center align-items-center">
-					<div class="col-lg-8" style="padding-top:120px">
+					<div class="col-lg-8" style="padding-top:150px">
 						<div class="searchtemp text-right">
 							<nav>
 							<div class="search relative">
@@ -73,11 +73,11 @@
 							</nav>
 						</div>
 					<div class="banner-content text-center" style="padding-bottom: 50px">
-							<h1 class="text-uppercase text-white">Movie found:</h1>
+							<h1 class="text-uppercase text-white">Keresés eredménye:</h1>
 							<div class="text-center">
-							<a href="#" class="primary-btn banner-btn">Add to favourites</a>
+							<a href="#" class="primary-btn banner-btn">Feliratkozás</a>
 							<div class="text-left">
-							<p class="text-uppercase text-white">Title: {{ name }}</p>
+							<p class="text-uppercase text-white">Cím: {{ name }}</p>
 							<p class="text-uppercase text-white">Értékelés: {{ vote_average }}</p>
 							<p class="text-uppercase text-white">Első megjelenési dátum: {{ first_air_date }}</p>
 							<p class="text-uppercase text-white">Következő epizód megjelenése: {{ next_episode_date }}</p>
@@ -86,6 +86,56 @@
 						</div>
 					</div>
 				</div>
+			</div>
+			<!-- Trigger/Open the Modal -->
+<!-- The Modal -->
+<div id="id01" class="w3-modal" style="padding-top:150px; background: rgba(50, 50, 50, 0.75);">
+  <div class="w3-modal-content" style="font-family: 'Poppins', sans-serif;">
+    <div class="w3-container">
+      <span onclick="document.getElementById('id01').style.display='none'" 
+      class="w3-button w3-display-topright">&times;</span>
+      <form class="w3-container" action="/login.php" style="margin-top:20px;">
+        <div class="w3-section">
+          <label><b>Felhasználónév</b></label>
+          <input class="w3-input w3-border w3-margin-bottom" type="text" placeholder="Felhasználónév" name="usrname" required>
+          <label><b>Jelszó</b></label>
+          <input class="w3-input w3-border w3-margin-bottom" type="text" placeholder="Jelszó" name="pwd" required>
+          <button class="w3-button w3-block w3-green w3-section w3-padding" type="submit">Belépés</button>
+        </div>
+      </form>
+	  
+	  <div class="w3-container w3-border-top w3-padding-16">
+        <span class="w3-right w3-padding">Nem vagy <a href="#" onclick="document.getElementById('id01').style.display='none'; document.getElementById('id02').style.display='block'">regisztrálva?</a></span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="id02" class="w3-modal" style="padding-top:150px; background: rgba(50, 50, 50, 0.75);">
+  <div class="w3-modal-content" style="font-family: 'Poppins', sans-serif;">
+    <div class="w3-container">
+      <span onclick="document.getElementById('id01').style.display='none'; document.getElementById('id02').style.display='none'" 
+      class="w3-button w3-display-topright">&times;</span>
+      <form class="w3-container" style="margin-top:20px;" action="/register.php">
+	  <h2>Regisztráció</h2>
+        <div class="w3-section">
+          <label><b>Felhasználónév</b></label>
+          <input class="w3-input w3-border w3-margin-bottom" type="text" placeholder="Felhasználónév" name="usrname-r" required>
+		  <label><b>E-mail cím</b></label>
+          <input class="w3-input w3-border w3-margin-bottom" type="email" placeholder="E-mail cím" name="email-r" required>
+          <label><b>Jelszó</b></label>
+          <input class="w3-input w3-border w3-margin-bottom" type="text" placeholder="Jelszó" name="pwd-r" required>
+		  <label><b>Jelszó újra</b></label>
+          <input class="w3-input w3-border w3-margin-bottom" type="text" placeholder="Jelszó" name="pwd-r2" required>
+          
+		  <button class="w3-button w3-block w3-green w3-section" type="submit">Regisztráció</button>
+			
+  </div>
+      </form>
+    </div>
+  </div>
+</div>
+
 			</div>
 		</section>
 		<!-- End Banner Area -->
@@ -107,7 +157,6 @@
 		<script src="{% static "series/js/jquery.ajaxchimp.min.js" %}"></script>
 		<script src="{% static "series/js/jquery.sticky.js" %}"></script>
 		<script src="{% static "series/js/owl.carousel.min.js" %}"></script>
-		<script src="{% static "series/js/mixitup.min.js" %}"></script>
 		<script src="{% static "series/js/main.js" %}"></script>
 
 		<script>
