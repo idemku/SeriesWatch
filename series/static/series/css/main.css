@@ -225,11 +225,11 @@ h1 {
 }
 
 .searchtemp{
-	max-width: 500px;
-	min-width: 300px;
-	margin: auto;
-	margin-bottom: 50px;
-	position:relative;
+  max-width: 500px;
+  min-width: 300px;
+  margin: auto;
+  margin-bottom: 50px;
+  position:relative;
 }
 
 .search span {
