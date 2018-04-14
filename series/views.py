@@ -3,10 +3,11 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
-import http.client, urllib.parse, json, configparser, datetime
+import http.client, urllib.parse, json, configparser, datetime, os
 
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 config = configparser.ConfigParser()
-config.read("conf.cnf")
+config.read((os.path.join(BASE_DIR,  'conf.cnf'),))
 if config.sections() == []:
     print("Nem sikerült beolvasni a conf.cnf fájlt. A program leáll...")
     exit(1)
