@@ -32,8 +32,10 @@ def index(request):
     except KeyError:
         print("GET-el lett megnyitva az index.")
     except IndexError:
-        context["name"] = "Nincs ilyen sorozat"
-
+        try:
+            context = search_movie(title)
+        except IndexError:
+            context["name"] = "Nincs ilyen film/sorozat"
     context["user"] = user
     return render(request, "series/index.html", context)
 
@@ -132,5 +134,31 @@ def search_tv(title):
             break
 
     print(str(output_data["next_episode_date"]))
+
+    return output_data
+
+
+def search_movie(title):
+    # létrehozza a kapcsolatot
+    conn = http.client.HTTPSConnection("api.themoviedb.org")
+    payload = "{}"
+
+    # összefűzzük a linket a lekérdezéshez
+    link = "/3/search/movie?"
+    link += urllib.parse.urlencode({"query": title, "language": language, "api_key": api_key})
+
+    # meghívja a linket és a visszakapott JSON-t eltárolja a data változóban
+    conn.request("GET", link, payload)
+    res = conn.getresponse()
+    data = res.read()
+    json_data = json.loads(data.decode("utf-8"))
+    output_data = {
+        "name": json_data["results"][0]["title"],
+        "vote_average": str(json_data["results"][0]["vote_average"]),
+        "first_air_date": json_data["results"][0]["release_date"],
+        "next_episode_date": "Ismeretlen",
+        "last_air_date": "Ismeretlen",
+        "overview": json_data["results"][0]["overview"]
+    }
 
     return output_data
