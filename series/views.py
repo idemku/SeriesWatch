@@ -3,6 +3,8 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
+from django.db import IntegrityError
+from .models import Series
 import http.client, urllib.parse, json, configparser, datetime, os
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -23,7 +25,7 @@ def index(request):
     else:
         user = "LOGIN"
 
-    context = {"name": "", "vote_average": "", "first_air_date": "", "next_episode_date": "", "overview": ""}
+    context = {"id": "", "name": "", "vote_average": "", "first_air_date": "", "next_episode_date": "", "overview": ""}
 
     try:
         title = request.POST["title"]
@@ -83,6 +85,35 @@ def register_view(request):
 
 
 @login_required
+def subscribe(request, series_id):
+    # Ellenőrizzük, hogy létezik-e ilyen azonosítóval sorozat
+    # létrehozza a kapcsolatot
+    conn = http.client.HTTPSConnection("api.themoviedb.org")
+    payload = "{}"
+
+    # összefűzzük a linket a lekérdezéshez
+    link = "/3/tv/"
+    link += urllib.parse.quote(str(series_id)) + "?"
+    link += urllib.parse.urlencode({"language": language, "api_key": api_key})
+
+    conn.request("GET", link, payload)
+    res = conn.getresponse()
+    data = res.read()
+    json_data = json.loads(data.decode("utf-8"))
+
+    if "status_code" in json_data:
+        return render(request, "series/index.html", {})  # Hibás azonosító, visszaírányít a kezdőoldalra
+
+    try:
+        serie = Series.objects.create(seriesID=series_id)  # Megpróbálja létrehozni az adott azonosító
+    except IntegrityError:
+        serie = Series.objects.get(seriesID=series_id)  # Ha már létezik, akkor csak lekéri a DB-ből
+    user = User.objects.get(username=request.user.username)
+    serie.users.add(user)
+    return redirect("index")  # Ha kész, visszadob a kezdőoldalra
+
+
+@login_required
 def my_series(request):
     return render(request, "series/my-series.html", {})
 
@@ -102,11 +133,11 @@ def search_tv(title):
     data = res.read()
     json_data = json.loads(data.decode("utf-8"))
     output_data = {
+        "id": json_data["results"][0]["id"],
         "name": json_data["results"][0]["name"],
         "vote_average": str(json_data["results"][0]["vote_average"]),
         "first_air_date": json_data["results"][0]["first_air_date"],
         "next_episode_date": "Ismeretlen",
-        "last_air_date": "Ismeretlen",
         "overview": json_data["results"][0]["overview"]
     }
     id = json_data["results"][0]["id"]
@@ -116,7 +147,6 @@ def search_tv(title):
     res = conn.getresponse()
     data = res.read()
     json_data = json.loads(data.decode("utf-8"))
-    output_data["last_air_date"] = json_data["last_air_date"]
     last_season_num = json_data["seasons"][len(json_data["seasons"])-1]["season_number"]
 
     link = "/3/tv/" + str(id) + "/season/" + str(last_season_num) + "?"
@@ -153,11 +183,11 @@ def search_movie(title):
     data = res.read()
     json_data = json.loads(data.decode("utf-8"))
     output_data = {
+        "id": json_data["results"][0]["id"],
         "name": json_data["results"][0]["title"],
         "vote_average": str(json_data["results"][0]["vote_average"]),
         "first_air_date": json_data["results"][0]["release_date"],
         "next_episode_date": "Ismeretlen",
-        "last_air_date": "Ismeretlen",
         "overview": json_data["results"][0]["overview"]
     }
 
