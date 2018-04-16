@@ -1,4 +1,4 @@
 from django.contrib import admin
-from .models import Series
+from .models import SeriesTable
 
-admin.site.register(Series)
+admin.site.register(SeriesTable)

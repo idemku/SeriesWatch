@@ -1,11 +1,25 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="hu">
 <head>
     <meta charset="UTF-8">
-    <title>My-Series</title>
+    <title>Sorozataim</title>
 </head>
 <body>
-<p>Juhééé megy a bejelentkezés!!!</p>
-<p>Üdv, {{ username }}!</p>
+<table>
+    <tr>
+        <td>Cím</td>
+        <td>Első megjelenés</td>
+        <td>Következő epizód</td>
+    </tr>
+    {% for serie in series %}
+        <tr>
+            <td>{{ serie.name }}</td>
+            <td>{{ serie.first_air_date }}</td>
+            <td>{{ serie.next_episode_date }}</td>
+        </tr>
+    {% empty %}
+        <p>Még nem adtál hozzá egy sorozatot sem a kedvenceidhez</p>
+    {% endfor %}
+</table>
 </body>
 </html>

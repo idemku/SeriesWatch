@@ -4,7 +4,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
 from django.db import IntegrityError
-from .models import Series
+from .models import SeriesTable
 import http.client, urllib.parse, json, configparser, datetime, os
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -105,9 +105,9 @@ def subscribe(request, series_id):
         return render(request, "series/index.html", {})  # Hibás azonosító, visszaírányít a kezdőoldalra
 
     try:
-        serie = Series.objects.create(seriesID=series_id)  # Megpróbálja létrehozni az adott azonosító
+        serie = SeriesTable.objects.create(seriesID=series_id)  # Megpróbálja létrehozni az adott azonosító
     except IntegrityError:
-        serie = Series.objects.get(seriesID=series_id)  # Ha már létezik, akkor csak lekéri a DB-ből
+        serie = SeriesTable.objects.get(seriesID=series_id)  # Ha már létezik, akkor csak lekéri a DB-ből
     user = User.objects.get(username=request.user.username)
     serie.users.add(user)
     return redirect("index")  # Ha kész, visszadob a kezdőoldalra
@@ -115,7 +115,44 @@ def subscribe(request, series_id):
 
 @login_required
 def my_series(request):
-    return render(request, "series/my-series.html", {})
+    series_set = SeriesTable.objects.filter(users__username=request.user.username)
+    data = []
+    for serie in series_set:
+        data.append(search_tv_by_id(serie.seriesID))
+    return render(request, "series/my-series.html", {"series": data})
+
+
+def search_tv_by_id(id):
+    # létrehozza a kapcsolatot
+    conn = http.client.HTTPSConnection("api.themoviedb.org")
+    payload = "{}"
+
+    link = "/3/tv/" + str(id) + "?" + urllib.parse.urlencode({"api_key": api_key, "language": language})
+    conn.request("GET", link, payload)
+    res = conn.getresponse()
+    data = res.read()
+    json_data = json.loads(data.decode("utf-8"))
+    last_season_num = json_data["seasons"][len(json_data["seasons"]) - 1]["season_number"]
+
+    output_data = {"name": json_data["name"], "first_air_date": json_data["first_air_date"], "next_episode_date": "Ismeretlen"}
+
+    link = "/3/tv/" + str(id) + "/season/" + str(last_season_num) + "?"
+    link += urllib.parse.urlencode({"api_key": api_key, "language": language})
+    conn.request("GET", link, payload)
+    res = conn.getresponse()
+    data = res.read()
+    json_data = json.loads(data.decode("utf-8"))
+
+    today = datetime.datetime.today().strftime("%Y-%m-%d")  # formázott stringként adja vissza a dátumot
+    print(link)
+    for i in json_data["episodes"]:
+        if i["air_date"] >= today:
+            output_data["next_episode_date"] = i["air_date"]
+            break
+
+    print(str(output_data["next_episode_date"]))
+
+    return output_data
 
 
 def search_tv(title):
