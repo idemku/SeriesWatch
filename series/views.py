@@ -12,7 +12,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 config = configparser.ConfigParser()
 config.read((os.path.join(BASE_DIR,  'conf.cnf'),))
 if config.sections() == []:
-    print("Nem sikerült beolvasni a conf.cnf fájlt. A program leáll...")
+    print("Nem sikerült beolvasni  a conf.cnf fájlt. A program leáll...")
     exit(1)
 
 api_key = config["SW"]["apiKey"]
