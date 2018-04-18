@@ -1,4 +1,5 @@
 from django.core.exceptions import ObjectDoesNotExist
+from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
@@ -120,6 +121,24 @@ def my_series(request):
     for serie in series_set:
         data.append(search_tv_by_id(serie.seriesID))
     return render(request, "series/my-series.html", {"series": data})
+
+
+def get_hint(request, title):
+
+    # létrehozza a kapcsolatot
+    conn = http.client.HTTPSConnection("api.themoviedb.org")
+    payload = "{}"
+
+    # összefűzzük a linket a lekérdezéshez
+    link = "/3/search/tv?"
+    link += urllib.parse.urlencode({"query": title, "language": language, "api_key": api_key})
+
+    # meghívja a linket és a visszakapott JSON-t eltárolja a data változóban
+    conn.request("GET", link, payload)
+    res = conn.getresponse()
+    data = res.read()
+    print(str(data.decode("utf-8")))
+    return HttpResponse(data.decode("utf-8"))
 
 
 def search_tv_by_id(id):
