@@ -20,11 +20,10 @@ language = config["SW"]["language"]
 
 
 def index(request):
-    if request.user.is_authenticated and isinstance(request.user, User):
-        # TODO: Ez itt valamiért még mindig beadja anonym usernél...
+    if request.user.is_authenticated:
         user = request.user.username
     else:
-        user = "LOGIN"
+        user = "-1"
 
     context = {"id": "", "name": "", "vote_average": "", "first_air_date": "",
                "next_episode_date": "", "overview": ""}
@@ -40,7 +39,7 @@ def index(request):
             context = search_movie(title)
         except IndexError:
             context["name"] = "Nincs ilyen film/sorozat"
-    context["user"] = user
+    context["user"] = str(user)
     return render(request, "series/index.html", context)
 
 

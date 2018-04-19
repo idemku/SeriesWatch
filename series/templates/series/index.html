@@ -37,7 +37,7 @@
                   <div class="right-bar d-flex align-items-center">
                      <nav>
                         <div class="topnav" id="myTopnav">
-                           {% if user != "LOGIN" %}
+                           {% if user != "-1" and not user.is_anonymous %}
                              <a href="#" onclick="myseries()">Sorozataim</a>
                              <a href="/logout/">LOGOUT</a>
                              <a href="">{{ user }}</a>
