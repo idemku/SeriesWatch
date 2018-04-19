@@ -28,3 +28,18 @@ function showHint(str) {
   xhttp.open("GET", "get-hint/"+str+"/", true);
   xhttp.send();
 }
+
+function myseries(){
+  var xhttp;
+    console.log("start script");
+  xhttp = new XMLHttpRequest();
+  xhttp.onreadystatechange = function() {
+    if (this.readyState == 4 && this.status == 200) {
+        console.log("ez is elindult");
+        document.getElementById("search-page").style.display = "none";
+        document.getElementById("my-series-table").innerHTML = this.responseText;
+    }
+  };
+  xhttp.open("GET", "my-series/", true);
+  xhttp.send();
+}

@@ -1,3 +1,4 @@
+import http.client, urllib.parse, json, configparser, datetime, os
 from django.core.exceptions import ObjectDoesNotExist
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
@@ -6,13 +7,12 @@ from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
 from django.db import IntegrityError
 from .models import SeriesTable
-import http.client, urllib.parse, json, configparser, datetime, os
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 config = configparser.ConfigParser()
 config.read((os.path.join(BASE_DIR,  'conf.cnf'),))
 if config.sections() == []:
-    print("Nem sikerült beolvasni  a conf.cnf fájlt. A program leáll...")
+    print("Nem sikerült beolvasni a conf.cnf fájlt. A program leáll...")
     exit(1)
 
 api_key = config["SW"]["apiKey"]
@@ -26,7 +26,8 @@ def index(request):
     else:
         user = "LOGIN"
 
-    context = {"id": "", "name": "", "vote_average": "", "first_air_date": "", "next_episode_date": "", "overview": ""}
+    context = {"id": "", "name": "", "vote_average": "", "first_air_date": "",
+               "next_episode_date": "", "overview": ""}
 
     try:
         title = request.POST["title"]
@@ -75,7 +76,8 @@ def register_view(request):
             return render(request, "series/index.html", context)
         else:
             try:
-                dbuser = User.objects.get(username=user)  # Ha ez lefut, akkor már van ilyen user a db-ben
+                # Ha ez lefut, akkor már van ilyen user a db-ben
+                dbuser = User.objects.get(username=user)
                 context = {"regerror": "Már van ilyen nevű felhasználó: " + dbuser.username}
                 return render(request, "series/index.html", context)
             except ObjectDoesNotExist:
@@ -103,12 +105,15 @@ def subscribe(request, series_id):
     json_data = json.loads(data.decode("utf-8"))
 
     if "status_code" in json_data:
-        return render(request, "series/index.html", {})  # Hibás azonosító, visszaírányít a kezdőoldalra
+        # Hibás azonosító, visszaírányít a kezdőoldalra
+        return render(request, "series/index.html", {})
 
     try:
-        serie = SeriesTable.objects.create(seriesID=series_id)  # Megpróbálja létrehozni az adott azonosító
+        # Megpróbálja létrehozni az adott azonosító
+        serie = SeriesTable.objects.create(seriesID=series_id)
     except IntegrityError:
-        serie = SeriesTable.objects.get(seriesID=series_id)  # Ha már létezik, akkor csak lekéri a DB-ből
+        # Ha már létezik, akkor csak lekéri a DB-ből
+        serie = SeriesTable.objects.get(seriesID=series_id)
     user = User.objects.get(username=request.user.username)
     serie.users.add(user)
     return redirect("index")  # Ha kész, visszadob a kezdőoldalra
@@ -146,14 +151,16 @@ def search_tv_by_id(id):
     conn = http.client.HTTPSConnection("api.themoviedb.org")
     payload = "{}"
 
-    link = "/3/tv/" + str(id) + "?" + urllib.parse.urlencode({"api_key": api_key, "language": language})
+    link = "/3/tv/" + str(id) + "?"
+    link += urllib.parse.urlencode({"api_key": api_key, "language": language})
     conn.request("GET", link, payload)
     res = conn.getresponse()
     data = res.read()
     json_data = json.loads(data.decode("utf-8"))
     last_season_num = json_data["seasons"][len(json_data["seasons"]) - 1]["season_number"]
 
-    output_data = {"name": json_data["name"], "first_air_date": json_data["first_air_date"], "next_episode_date": "Ismeretlen"}
+    output_data = {"name": json_data["name"], "first_air_date": json_data["first_air_date"],
+                   "next_episode_date": "Ismeretlen"}
 
     link = "/3/tv/" + str(id) + "/season/" + str(last_season_num) + "?"
     link += urllib.parse.urlencode({"api_key": api_key, "language": language})
@@ -162,7 +169,8 @@ def search_tv_by_id(id):
     data = res.read()
     json_data = json.loads(data.decode("utf-8"))
 
-    today = datetime.datetime.today().strftime("%Y-%m-%d")  # formázott stringként adja vissza a dátumot
+    # formázott stringként adja vissza a dátumot
+    today = datetime.datetime.today().strftime("%Y-%m-%d")
     print(link)
     for i in json_data["episodes"]:
         if i["air_date"] >= today:
@@ -198,7 +206,8 @@ def search_tv(title):
     }
     id = json_data["results"][0]["id"]
 
-    link = "/3/tv/" + str(id) + "?" + urllib.parse.urlencode({"api_key": api_key, "language": language})
+    link = "/3/tv/" + str(id) + "?"
+    link += urllib.parse.urlencode({"api_key": api_key, "language": language})
     conn.request("GET", link, payload)
     res = conn.getresponse()
     data = res.read()
@@ -212,7 +221,8 @@ def search_tv(title):
     data = res.read()
     json_data = json.loads(data.decode("utf-8"))
 
-    today = datetime.datetime.today().strftime("%Y-%m-%d")  # formázott stringként adja vissza a dátumot
+    # formázott stringként adja vissza a dátumot
+    today = datetime.datetime.today().strftime("%Y-%m-%d")
     print(link)
     for i in json_data["episodes"]:
         if i["air_date"] >= today:

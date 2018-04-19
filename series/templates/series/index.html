@@ -16,6 +16,7 @@
       <title>SeriesNotifier</title>
       <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
       <link href="https://fonts.googleapis.com/css?family=Poppins:300,500,600" rel="stylesheet">
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
       <!-- CSS -->
       <link rel="stylesheet" href="{% static "series/css/linearicons.css" %}">
       <link rel="stylesheet" href="{% static "series/css/font-awesome.min.css" %}">
@@ -36,10 +37,13 @@
                   <div class="right-bar d-flex align-items-center">
                      <nav>
                         <div class="topnav" id="myTopnav">
-                           <a href="javascript:location.reload();">Kereső</a>
-                           <a href="#news">Hírek</a>
-                           <a href="#myseries">Sorozataim</a>
-                           <a href="#" onclick="document.getElementById('id01').style.display='block'">{{ user }}</a>
+                           {% if user != "LOGIN" %}
+                             <a href="#" onclick="myseries()">Sorozataim</a>
+                             <a href="/logout/">LOGOUT</a>
+                             <a href="">{{ user }}</a>
+                           {% else %}
+                             <a href="#" onclick="document.getElementById('id01').style.display='block'">LOGIN</a>
+                           {% endif %}
                            <a href="javascript:void(0);" class="icon" onclick="myFunction()">&#9776;</a>
                         </div>
                      </nav>
@@ -52,7 +56,7 @@
       <!-- Start Banner Area -->
       <section class="banner-area relative">
          <div class="container">
-            <div class="row justify-content-center align-items-center">
+            <div id="search-page" class="row justify-content-center align-items-center">
                <div class="col-lg-8" style="padding-top:150px">
                   <div class="searchtemp text-right">
                      <nav>
@@ -60,8 +64,8 @@
                            <span class="lnr lnr-magnifier"></span>
                            <form action="" class="search-field" method="post" autocomplete="off">
                               {% csrf_token %}
-                              <input list="titles" name="title" placeholder="Enter movie name here."
-                                     onfocus="this.placeholder = ''" onblur="this.placeholder = 'Search here'"
+                              <input list="titles" name="title" placeholder="Ide írd a címet"
+                                     onfocus="this.placeholder = ''" onblur="this.placeholder = 'Ide írd a címet'"
                                      onkeyup="showHint(this.value)">
                                <datalist id="titles"></datalist>
                            </form>
@@ -75,7 +79,7 @@
                          {% if id and user != "LOGIN" %}
                             <a href="/subscribe/{{ id }}/" class="primary-btn banner-btn">Feliratkozás</a>
                          {% elif id %}
-                            <p>A feliratkozáshoz be kell jelentkezned</p>
+                            <p class="text-white">A feliratkozáshoz be kell jelentkezned</p>
                          {% endif %}
                         <div class="text-left">
                            <p class="text-uppercase text-white">Cím: {{ name }}</p>
@@ -88,12 +92,22 @@
                   </div>
                </div>
             </div>
+
+            <div class="row justify-content-center align-items-center">
+               <div id="my-series-table" class="text-white col-lg-8" style="padding-top:150px"></div>
+            </div>
             <!-- Trigger/Open the Modal -->
             <!-- The Login Modal -->
             <div id="id01" class="w3-modal" style="padding-top:150px; background: rgba(50, 50, 50, 0.75);">
                <div class="w3-modal-content" style="font-family: 'Poppins', sans-serif;">
                   <div class="w3-container">
-                     <span onclick="document.getElementById('id01').style.display='none'" 
+                     {% if loginerror %}
+                        <script>
+                            console.log("lefut");
+                            document.getElementById("id01").style.display = "block";
+                        </script>
+                     {% endif %}
+                     <span onclick="document.getElementById('id01').style.display='none'"
                         class="w3-button w3-display-topright">&times;</span>
                      <form class="w3-container" action="/login/" method="post" style="margin-top:20px;">
                         {% csrf_token %}
@@ -118,7 +132,13 @@
             <div id="id02" class="w3-modal" style="padding-top:150px; background: rgba(50, 50, 50, 0.75);">
                <div class="w3-modal-content" style="font-family: 'Poppins', sans-serif;">
                   <div class="w3-container">
-                     <span onclick="document.getElementById('id01').style.display='none'; document.getElementById('id02').style.display='none'" 
+                     {% if regerror %}
+                        <script>
+                            document.getElementById("id01").style.display = "none";
+                            document.getElementById("id02").style.display = "block";
+                        </script>
+                     {% endif %}
+                     <span onclick="document.getElementById('id01').style.display='none'; document.getElementById('id02').style.display='none'"
                         class="w3-button w3-display-topright">&times;</span>
                      <form class="w3-container" style="margin-top:20px;" action="/register/" method="POST">
                         {% csrf_token %}
@@ -132,6 +152,7 @@
                            <input class="w3-input w3-border w3-margin-bottom" type="password" placeholder="Jelszó" name="pwd-r" required>
                            <label><b>Jelszó újra</b></label>
                            <input class="w3-input w3-border w3-margin-bottom" type="password" placeholder="Jelszó" name="pwd-r2" required>
+                           <input type="checkbox" name="emailNotify"> Kérek e-mail értesítést a megjelenő sorozatokról<br>
                            <button class="w3-button w3-block w3-green w3-section" type="submit">Regisztráció</button>
                             {% if regerror %}
                                 <p>{{ regerror }}</p>
@@ -149,7 +170,7 @@
             <div class="footer-bottom d-flex justify-content-between align-items-center">
                <p class="footer-text m-0">Copyright &copy; 2018  |  All rights reserved to <a href="#">Series Notifier inc.</a> Powered by <a target="_blank" href="https://www.themoviedb.org/">The Movie DB</a>.</p>
                <div class="footer-social d-flex align-items-center">
-                  <a href="#"><i class="fa fa-facebook"></i></a>
+                  <a href="https://github.com/idemku/SeriesWatch"><i class="fa fa-github"></i></a>
                </div>
             </div>
          </div>
