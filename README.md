@@ -19,6 +19,7 @@ Ahhoz, hogy működjenek a lekérdezések, mielőtt elindítod a szervert, hozz 
 
 Hozd létre az adatbázis és a szükséges adattáblákat a következő parancsokkal:
 ```
+python manage.py makemigrations series
 python manage.py makemigrations
 python manage.py migrate
 ```
