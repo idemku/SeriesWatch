@@ -1,5 +1,9 @@
 from django.db import models
-from django.contrib.auth.models import User
+from django.contrib.auth.models import AbstractUser
+
+
+class User(AbstractUser):
+    emailNotify = models.BooleanField(default=False)
 
 
 class SeriesTable(models.Model):

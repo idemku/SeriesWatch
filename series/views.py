@@ -3,10 +3,9 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
 from django.db import IntegrityError
-from .models import SeriesTable
+from .models import SeriesTable, User
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 config = configparser.ConfigParser()
@@ -70,6 +69,10 @@ def register_view(request):
         email = request.POST["email-r"]
         pass1 = request.POST["pwd-r"]
         pass2 = request.POST["pwd-r2"]
+        emailnotify = False
+        if "emailNotify" in request.POST:
+            emailnotify = True
+
         if pass1 != pass2:
             context = {"regerror": "A megadott jelszavak nem egyeznek meg."}
             return render(request, "series/index.html", context)
@@ -80,7 +83,7 @@ def register_view(request):
                 context = {"regerror": "Már van ilyen nevű felhasználó: " + dbuser.username}
                 return render(request, "series/index.html", context)
             except ObjectDoesNotExist:
-                User.objects.create_user(user, email, pass1)
+                User.objects.create_user(username=user, email=email, password=pass1, emailNotify=emailnotify)
             return redirect("index")
     except KeyError:
         return redirect("index")
