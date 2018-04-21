@@ -32,7 +32,7 @@
             <div class="container">
                <div class="header-content d-flex justify-content-between align-items-center">
                   <div class="logo">
-                     <a href="https://series.demq.hu" class="smooth"><img src="{% static "series/img/logo2.png" %}" alt=""></a>
+                     <a href="" class="smooth"><img src="{% static "series/img/logo2.png" %}" alt=""></a>
                   </div>
                   <div class="right-bar d-flex align-items-center">
                      <nav>
@@ -40,11 +40,11 @@
                            {% if user != "-1" and not user.is_anonymous %}
                              <a href="#" onclick="myseries()">Sorozataim</a>
                              <a href="/logout/">LOGOUT</a>
-                             <a href="">{{ user }}</a>
+                             <a href="#">{{ user }}</a>
+                             <a href="javascript:void(0);" class="icon" onclick="myFunction()">&#9776;</a>
                            {% else %}
                              <a href="#" onclick="document.getElementById('id01').style.display='block'">LOGIN</a>
                            {% endif %}
-                           <a href="javascript:void(0);" class="icon" onclick="myFunction()">&#9776;</a>
                         </div>
                      </nav>
                   </div>
@@ -61,12 +61,12 @@
                   <div class="searchtemp text-right">
                      <nav>
                         <div class="search relative">
+                        	<!-- EZ A NAGYÍTÓ ERRE KELL A LINK -->
                            <span class="lnr lnr-magnifier"></span>
                            <form action="" class="search-field" method="post" autocomplete="off">
                               {% csrf_token %}
                               <input list="titles" name="title" placeholder="Ide írd a címet"
-                                     onfocus="this.placeholder = ''" onblur="this.placeholder = 'Ide írd a címet'"
-                                     onkeyup="showHint(this.value)">
+                                     onblur="this.placeholder" onkeyup="showHint(this.value)">
                                <datalist id="titles"></datalist>
                            </form>
                             <span id="txtHint"></span>

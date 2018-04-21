@@ -1,16 +1,20 @@
-<table>
-    <tr>
-        <td>Cím</td>
-        <td>Első megjelenés</td>
-        <td>Következő epizód</td>
-    </tr>
-    {% for serie in series %}
+<table class="table table-striped">
+    <thead>
         <tr>
-            <td>{{ serie.name }}</td>
-            <td>{{ serie.first_air_date }}</td>
-            <td>{{ serie.next_episode_date }}</td>
+            <th scope="col">Cím</th>
+            <th scope="col">Első megjelenés</th>
+            <th scope="col">Következő epizód</th>
         </tr>
-    {% empty %}
-        <p>Még nem adtál hozzá egy sorozatot sem a kedvenceidhez</p>
-    {% endfor %}
+    </thead>
+    <tbody>
+        {% for serie in series %}
+            <tr>
+                <td>{{ serie.name }}</td>
+                <td>{{ serie.first_air_date }}</td>
+                <td>{{ serie.next_episode_date }}</td>
+            </tr>
+        {% empty %}
+            <p>Még nem adtál hozzá egy sorozatot sem a kedvenceidhez</p>
+        {% endfor %}
+    </tbody>
 </table>
