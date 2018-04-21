@@ -38,9 +38,10 @@
                      <nav>
                         <div class="topnav" id="myTopnav">
                            {% if user != "-1" and not user.is_anonymous %}
-                             <a href="#" onclick="myseries()">Sorozataim</a>
+                             <a id="searchlink" href="" style="display: none;">Keresés</a>
+                             <a id="myserieslink" href="#" onclick="myseries()">Sorozataim</a>
                              <a href="/logout/">LOGOUT</a>
-                             <a href="#">{{ user }}</a>
+                             <a href="#" onclick="myprofile()">{{ user }}</a>
                              <a href="javascript:void(0);" class="icon" onclick="myFunction()">&#9776;</a>
                            {% else %}
                              <a href="#" onclick="document.getElementById('id01').style.display='block'">LOGIN</a>
@@ -62,14 +63,14 @@
                      <nav>
                         <div class="search relative">
                         	<!-- EZ A NAGYÍTÓ ERRE KELL A LINK -->
-                           <span class="lnr lnr-magnifier"></span>
+                           <span class="lnr lnr-magnifier" onclick="submitSearch()"></span>
                            <form action="" class="search-field" method="post" autocomplete="off">
                               {% csrf_token %}
-                              <input list="titles" name="title" placeholder="Ide írd a címet"
-                                     onblur="this.placeholder" onkeyup="showHint(this.value)">
+                              <input list="titles" name="title" id="title" placeholder="Ide írd a címet"
+                                     onkeyup="showHint(this.value)">
                                <datalist id="titles"></datalist>
                            </form>
-                            <span id="txtHint"></span>
+                           <span id="txtHint"></span>
                         </div>
                      </nav>
                   </div>
@@ -115,7 +116,7 @@
                            <label><b>Felhasználónév</b></label>
                            <input class="w3-input w3-border w3-margin-bottom" type="text" placeholder="Felhasználónév" name="usrname" required>
                            <label><b>Jelszó</b></label>
-                           <input class="w3-input w3-border w3-margin-bottom" type="password" placeholder="Jelszó" name="pwd" required>
+                           <input class="w3-input w3-border w3-margin-bottom" type="password" placeholder="Jelszó" name="pwd">
                            <button class="w3-button w3-block w3-green w3-section w3-padding" type="submit">Belépés</button>
                             {% if loginerror %}
                                 <p>{{ loginerror }}</p>

@@ -1,0 +1,35 @@
+<form action="myprofile/" method="POST">
+{% csrf_token %}
+<table class="table table-striped">
+    <tbody>
+        <tr>
+            <td>Felhasználónév</td>
+            <td>{{ username }}</td>
+        </tr>
+        <tr>
+            <td>E-mail címe</td>
+            <td><input name="email" class="form-control col-form-label-sm" type="text" placeholder="{{ email }}"></td>
+        </tr>
+        <tr>
+            <td>Új jelszó</td>
+            <td><input name="pw1" class="form-control col-form-label-sm" type="password"></td>
+        </tr>
+        <tr>
+            <td>Jelszó megerősítése</td>
+            <td><input name="pw2" class="form-control col-form-label-sm" type="password"></td>
+        </tr>
+        <tr>
+            <td>E-mail értesítés</td>
+            {% if emailNotify %}
+                <td><input name="emailNotify" type="checkbox" checked></td>
+            {% else %}
+                <td><input name="emailNotify" type="checkbox"></td>
+            {% endif %}
+        </tr>
+    </tbody>
+</table>
+<center><button type="submit" class="btn btn-outline-light btn-sm">Mentés</button></center>
+</form>
+{% if profileerror %}
+<p class="text-white text-uppercase">{{ profileerror }}</p>
+{% endif %}

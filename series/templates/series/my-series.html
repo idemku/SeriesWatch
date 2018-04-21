@@ -4,6 +4,7 @@
             <th scope="col">Cím</th>
             <th scope="col">Első megjelenés</th>
             <th scope="col">Következő epizód</th>
+            <th scope="col"></th>
         </tr>
     </thead>
     <tbody>
@@ -12,6 +13,8 @@
                 <td>{{ serie.name }}</td>
                 <td>{{ serie.first_air_date }}</td>
                 <td>{{ serie.next_episode_date }}</td>
+                <td id="unsubButton{{ serie.id }}"><button type="button" value="{{ serie.id }}"
+                    class="btn btn-outline-light btn-sm" onclick="unsubscribe(this.value)">Leiratkozás</button></td>
             </tr>
         {% empty %}
             <p>Még nem adtál hozzá egy sorozatot sem a kedvenceidhez</p>

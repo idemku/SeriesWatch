@@ -31,11 +31,14 @@ function showHint(str) {
 
 function myseries(){
   var xhttp;
-    console.log("start script");
   xhttp = new XMLHttpRequest();
   xhttp.onreadystatechange = function() {
+    if (this.readyState == 1) {
+        document.getElementById("myserieslink").innerHTML = "<i class=\"fa fa-circle-o-notch fa-spin\" style=\"font-size:12px\"></i>";
+    }
     if (this.readyState == 4 && this.status == 200) {
-        console.log("ez is elindult");
+        document.getElementById("myserieslink").style = "display: none";
+        document.getElementById("searchlink").style = "display: inline-block";
         document.getElementById("search-page").style.display = "none";
         document.getElementById("my-series-table").innerHTML = this.responseText;
     }
@@ -43,3 +46,49 @@ function myseries(){
   xhttp.open("GET", "my-series/", true);
   xhttp.send();
 }
+
+function unsubscribe(id) {
+  var xhttp;
+  xhttp = new XMLHttpRequest();
+  xhttp.onreadystatechange = function() {
+    if (this.readyState == 1) {
+        document.getElementById("unsubButton" + id).innerHTML = "<i class=\"fa fa-circle-o-notch fa-spin\"" +
+                                                            "style=\"font-size:24px; color:white\"></i>"
+    }
+    if (this.readyState == 4 && this.status == 200) {
+        myseries();
+    }
+  };
+  xhttp.open("GET", "unsubscribe/" + id + "/", true);
+  xhttp.send();
+}
+
+function myprofile() {
+  var xhttp;
+  xhttp = new XMLHttpRequest();
+  xhttp.onreadystatechange = function() {
+    if (this.readyState == 4 && this.status == 200) {
+        document.getElementById("searchlink").style = "display: inline-block";
+        document.getElementById("myserieslink").style = "display: inline-block";
+        document.getElementById("myserieslink").innerHTML = "Sorozataim";
+        document.getElementById("search-page").style.display = "none";
+        document.getElementById("my-series-table").innerHTML = this.responseText;
+    }
+  };
+  xhttp.open("GET", "myprofile/", true);
+  xhttp.send();
+}
+
+/*function submitSearch() {
+    console.log("valami");
+  var xhttp;
+  xhttp = new XMLHttpRequest();
+  xhttp.onreadystatechange = function() {
+    if (this.readyState == 4 && this.status == 200) {
+        document.getElementById("search-page").style.display = "none";
+        document.getElementById("my-series-table").innerHTML = this.responseText;
+    }
+  };
+  xhttp.open("POST", "", true);
+  xhttp.send("title=" + document.getElementById("title").value);
+}*/

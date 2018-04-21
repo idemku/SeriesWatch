@@ -120,6 +120,13 @@ def subscribe(request, series_id):
     serie.users.add(user)
     return redirect("index")  # Ha kész, visszadob a kezdőoldalra
 
+@login_required
+def unsubscribe(request, series_id):
+    user = User.objects.get(username=request.user.username)
+    serie = SeriesTable.objects.get(seriesID=series_id)
+    serie.users.remove(user)
+    return HttpResponse("Sikeres leiratkozás")
+
 
 @login_required
 def my_series(request):
@@ -128,6 +135,30 @@ def my_series(request):
     for serie in series_set:
         data.append(search_tv_by_id(serie.seriesID))
     return render(request, "series/my-series.html", {"series": data})
+
+
+@login_required
+def my_profile(request):
+    user = User.objects.get(username=request.user.username)
+    error_msg = ""
+    if "email" in request.POST and request.POST["email"] != "":
+        user.email = request.POST["email"]
+    if "pw1" in request.POST and "pw2" in request.POST and request.POST["pw1"] == request.POST["pw2"] and request.POST["pw1"] != "":
+        user.set_password(request.POST["pw1"])
+    elif "pw1" in request.POST and request.POST["pw1"] != "":
+        error_msg = "A két jelszó nem egyezik meg"
+    if "emailNotify" in request.POST:
+        if request.POST["emailNotify"] == "on":
+            user.emailNotify = True
+        else:
+            user.emailNotify = False
+    user.save()
+
+    data = {"username": user.username, "email": user.email, "emailNotify": user.emailNotify, "profileerror": error_msg}
+    if request.POST:
+        return redirect("index")
+    else:
+        return render(request, "series/myprofile.html", data)
 
 
 def get_hint(request, title):
@@ -161,7 +192,7 @@ def search_tv_by_id(id):
     json_data = json.loads(data.decode("utf-8"))
     last_season_num = json_data["seasons"][len(json_data["seasons"]) - 1]["season_number"]
 
-    output_data = {"name": json_data["name"], "first_air_date": json_data["first_air_date"],
+    output_data = {"id": id, "name": json_data["name"], "first_air_date": json_data["first_air_date"],
                    "next_episode_date": "Ismeretlen"}
 
     link = "/3/tv/" + str(id) + "/season/" + str(last_season_num) + "?"

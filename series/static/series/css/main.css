@@ -250,7 +250,7 @@ h1 {
 }
 
 .search-field {
-  transform: scaleY(0);
+  transform: scaleY(1);
   -webkit-transition: all 0.3s ease 0s;
   -moz-transition: all 0.3s ease 0s;
   -o-transition: all 0.3s ease 0s;
@@ -261,7 +261,7 @@ h1 {
 }
 
 .search-field:hover {
-  transform: scaleY(1) !important;
+  /*transform: scaleY(1) !important;*/
 }
 
 .search-field input {
