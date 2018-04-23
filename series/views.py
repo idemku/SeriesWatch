@@ -27,17 +27,16 @@ def index(request):
     context = {"id": "", "name": "", "vote_average": "", "first_air_date": "",
                "next_episode_date": "", "overview": ""}
 
-    try:
-        title = request.POST["title"]
-        if title != "":
-            context = search_tv(title)
-    except KeyError:
-        print("GET-el lett megnyitva az index.")
-    except IndexError:
+    if request.method == "POST":
         try:
-            context = search_movie(title)
+            title = request.POST["title"]
+            if title != "":
+                context = search_tv(title)
         except IndexError:
-            context["name"] = "Nincs ilyen film/sorozat"
+            try:
+                context = search_movie(title)
+            except IndexError:
+                context["name"] = "Nincs ilyen film/sorozat"
     context["user"] = str(user)
     return render(request, "series/index.html", context)
 
@@ -146,9 +145,7 @@ def my_profile(request):
             user.email = request.POST["email"]
         if "pw1" in request.POST and "pw2" in request.POST and request.POST["pw1"] == request.POST["pw2"] and request.POST["pw1"] != "":
             user.set_password(request.POST["pw1"])
-            print(2)
         elif "pw1" in request.POST and request.POST["pw1"] != "":
-            print(3)
             error_msg = "A két jelszó nem egyezik meg"
 
         if "emailNotify" in request.POST:
@@ -176,7 +173,6 @@ def get_hint(request, title):
     conn.request("GET", link, payload)
     res = conn.getresponse()
     data = res.read()
-    print(str(data.decode("utf-8")))
     return HttpResponse(data.decode("utf-8"))
 
 
@@ -205,13 +201,10 @@ def search_tv_by_id(id):
 
     # formázott stringként adja vissza a dátumot
     today = datetime.datetime.today().strftime("%Y-%m-%d")
-    print(link)
     for i in json_data["episodes"]:
         if i["air_date"] >= today:
             output_data["next_episode_date"] = i["air_date"]
             break
-
-    print(str(output_data["next_episode_date"]))
 
     return output_data
 
@@ -257,13 +250,10 @@ def search_tv(title):
 
     # formázott stringként adja vissza a dátumot
     today = datetime.datetime.today().strftime("%Y-%m-%d")
-    print(link)
     for i in json_data["episodes"]:
         if i["air_date"] >= today:
             output_data["next_episode_date"] = i["air_date"]
             break
-
-    print(str(output_data["next_episode_date"]))
 
     return output_data
 
