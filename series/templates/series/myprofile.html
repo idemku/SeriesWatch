@@ -1,4 +1,4 @@
-<form action="myprofile/" method="POST">
+<form id="profileform" action="myprofile/" method="POST">
 {% csrf_token %}
 <table class="table table-striped">
     <tbody>
@@ -28,7 +28,7 @@
         </tr>
     </tbody>
 </table>
-<center><button type="submit" class="btn btn-outline-light btn-sm">Mentés</button></center>
+<center><button type="button" class="btn btn-outline-light btn-sm" onclick="post_myprofile()">Mentés</button></center>
 </form>
 {% if profileerror %}
 <p class="text-white text-uppercase">{{ profileerror }}</p>

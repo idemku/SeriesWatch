@@ -63,7 +63,7 @@ function unsubscribe(id) {
   xhttp.send();
 }
 
-function myprofile() {
+function get_myprofile() {
   var xhttp;
   xhttp = new XMLHttpRequest();
   xhttp.onreadystatechange = function() {
@@ -77,6 +77,19 @@ function myprofile() {
   };
   xhttp.open("GET", "myprofile/", true);
   xhttp.send();
+}
+
+function post_myprofile(){
+    var xhttp;
+    xhttp = new XMLHttpRequest();
+    xhttp.onreadystatechange = function() {
+        if (this.readyState == 4 && this.status == 200) {
+            document.getElementById("my-series-table").innerHTML = this.responseText;
+        }
+    };
+    var formData = new FormData(document.getElementById("profileform"));
+    xhttp.open("POST", "myprofile/", true);
+    xhttp.send(formData);
 }
 
 /*function submitSearch() {

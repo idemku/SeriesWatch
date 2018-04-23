@@ -141,24 +141,25 @@ def my_series(request):
 def my_profile(request):
     user = User.objects.get(username=request.user.username)
     error_msg = ""
-    if "email" in request.POST and request.POST["email"] != "":
-        user.email = request.POST["email"]
-    if "pw1" in request.POST and "pw2" in request.POST and request.POST["pw1"] == request.POST["pw2"] and request.POST["pw1"] != "":
-        user.set_password(request.POST["pw1"])
-    elif "pw1" in request.POST and request.POST["pw1"] != "":
-        error_msg = "A két jelszó nem egyezik meg"
-    if "emailNotify" in request.POST:
-        if request.POST["emailNotify"] == "on":
+    if request.method == "POST":
+        if "email" in request.POST and request.POST["email"] != "":
+            user.email = request.POST["email"]
+        if "pw1" in request.POST and "pw2" in request.POST and request.POST["pw1"] == request.POST["pw2"] and request.POST["pw1"] != "":
+            user.set_password(request.POST["pw1"])
+            print(2)
+        elif "pw1" in request.POST and request.POST["pw1"] != "":
+            print(3)
+            error_msg = "A két jelszó nem egyezik meg"
+
+        if "emailNotify" in request.POST:
             user.emailNotify = True
         else:
             user.emailNotify = False
-    user.save()
+        user.save()
 
     data = {"username": user.username, "email": user.email, "emailNotify": user.emailNotify, "profileerror": error_msg}
-    if request.POST:
-        return redirect("index")
-    else:
-        return render(request, "series/myprofile.html", data)
+
+    return render(request, "series/myprofile.html", data)
 
 
 def get_hint(request, title):
