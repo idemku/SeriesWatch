@@ -1,3 +1,10 @@
 [SW]
 language = hu-HU
 apiKey = 123hosszuszamsor456abc789
+
+[SMTP]
+server = ip.cim
+port = 1234
+email = felado@email.cime
+user = felhasznalonev
+passw = szupertitkosjelszo

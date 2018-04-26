@@ -57,3 +57,17 @@ Ez után a http://127.0.0.1:8000/admin felületen a létrehozott fiókkal bejele
 ---
 
 Design most már elérhető az index.html-en keresztül, egyelőre nem túl jól működik.
+
+---
+
+E-mail értesítés hozzáadva. Használat:
+- A conf-example.cnf mintájára ki kell tölteni a config fáljt a megfelelő adatokkal.
+- Az értesítések kiküldéséhez a parancs:
+```
+python manage.py sendemails
+```
+Az értesítés aznap kerül kiküldésre, amikor megjelenik az adott sorozat és csak azon
+sorozatok címei lesznek a levélben, amik épp megjelennek.
+
+Az automatizáláshoz crontab-ra állítsd be a fenti parancsot, Windows-os környezetben
+egyéb hasonló programban állítsd be a futtatást.

@@ -17,7 +17,6 @@ if config.sections() == []:
 api_key = config["SW"]["apiKey"]
 language = config["SW"]["language"]
 
-
 def index(request):
     if request.user.is_authenticated:
         user = request.user.username
