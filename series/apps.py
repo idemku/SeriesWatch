@@ -1,3 +1,8 @@
+##
+# @file
+# File documentation
+#
+
 from django.apps import AppConfig
 
 

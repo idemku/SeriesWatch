@@ -1,3 +1,8 @@
+##
+# @file
+# File documentation
+#
+
 """
 Django settings for SeriesWatch project.
 

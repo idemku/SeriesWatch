@@ -1,7 +1,14 @@
+##
+# @file
+# Itt találhatóak az alkalmazásból elérhető útvonalak.
+#
+
 from django.urls import path, include
 
 from . import views
 
+# Documented var \c urlpatterns .
+# Itt találhatóak az alkalmazásból elérhető útvonalak.
 urlpatterns = [
     path('', views.index, name='index'),
     path('login/', views.login_view, name='login'),

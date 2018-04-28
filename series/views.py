@@ -1,3 +1,8 @@
+##
+# @file
+# File documentation
+#
+
 import http.client, urllib.parse, json, configparser, datetime, os
 from django.core.exceptions import ObjectDoesNotExist
 from django.http import HttpResponse
@@ -18,6 +23,8 @@ api_key = config["SW"]["apiKey"]
 language = config["SW"]["language"]
 
 def index(request):
+    """Függvény amely a főoldal betöltődésekor fut le. Ez függvény POST metódussal kéri le a sorozatok/filmek adatait.
+     GET hívásnál hibát jelez."""
     if request.user.is_authenticated:
         user = request.user.username
     else:
@@ -41,6 +48,7 @@ def index(request):
 
 
 def login_view(request):
+    """Ez a függvény a bejelentkezésért felel. A POST kérésben van a felhásználónév és a jelszó."""
     try:
         user = request.POST["usrname"]
         passw = request.POST["pwd"]
@@ -57,11 +65,15 @@ def login_view(request):
 
 
 def logout_view(request):
+    """Ez a függvény a kijelentkezést hajtja végre."""
     logout(request)
     return redirect("index")
 
 
 def register_view(request):
+    """Ez a függvény a regisztrációért felel. Ellenőrizzük, hogy a megadott 2 jelszó egyezik-e, illetve,
+    hogy létezik-e már ilyen felhasználó.
+    Felhasználónevet, e-mail címet és a jelszót kell megadni a regisztráláshoz."""
     try:
         user = request.POST["usrname-r"]
         email = request.POST["email-r"]
@@ -89,6 +101,9 @@ def register_view(request):
 
 @login_required
 def subscribe(request, series_id):
+    """Itt tudunk feliratkozni sorozatokra. Ellenőrzi, hogy létezik-e a megadott azonosítóval sorozat,
+     hibás azonosító esetén visszairányít a főoldalra, ha minden rendben lefut
+    akkor is a főoldalra irányít. A feliratkozás használatához bejelentkezés szükséges."""
     # Ellenőrizzük, hogy létezik-e ilyen azonosítóval sorozat
     # létrehozza a kapcsolatot
     conn = http.client.HTTPSConnection("api.themoviedb.org")
@@ -120,6 +135,7 @@ def subscribe(request, series_id):
 
 @login_required
 def unsubscribe(request, series_id):
+    """Sorozatról tudunk leiratkozni. Használatához bejelentkezés szükséges."""
     user = User.objects.get(username=request.user.username)
     serie = SeriesTable.objects.get(seriesID=series_id)
     serie.users.remove(user)
@@ -128,6 +144,7 @@ def unsubscribe(request, series_id):
 
 @login_required
 def my_series(request):
+    """Visszakapjuk azokat a sorozatokat amelyekre fel vagyunk iratkozva. Használatához bejelentkezés szükséges."""
     series_set = SeriesTable.objects.filter(users__username=request.user.username)
     data = []
     for serie in series_set:
@@ -137,6 +154,7 @@ def my_series(request):
 
 @login_required
 def my_profile(request):
+    """Saját proflunk adatait jeleníti meg. Használatához bejelentkezés szükséges."""
     user = User.objects.get(username=request.user.username)
     error_msg = ""
     if request.method == "POST":
@@ -159,7 +177,7 @@ def my_profile(request):
 
 
 def get_hint(request, title):
-
+    """Ha elkezdjük gépelni a sorozat címét a keresőbe, ennek a függvénynek a segítségével kapjuk vissza a tippeket."""
     # létrehozza a kapcsolatot
     conn = http.client.HTTPSConnection("api.themoviedb.org")
     payload = "{}"
@@ -176,6 +194,9 @@ def get_hint(request, title):
 
 
 def search_tv_by_id(id):
+    """Sorozatokra tudunk keresni id alapján. A sorozat id-ját, címét, értékelését, első megjelenés dátumát,
+     következő epizód dátumát és a rövid leírást adja meg a sorrozatról.
+    Az id a bemenő paraméter. A dátumokat formázott stringként adja vissza."""
     # létrehozza a kapcsolatot
     conn = http.client.HTTPSConnection("api.themoviedb.org")
     payload = "{}"
@@ -209,6 +230,9 @@ def search_tv_by_id(id):
 
 
 def search_tv(title):
+    """Sorozatokra tudunk keresni cím alapján. A sorozat id-ját, címét, értékelését, első megjelenés dátumát,
+     következő epizód dátumát és a rövid leírást adja meg a sorrozatról.
+    A cím a bemenő paraméter. A dátumokat formázott stringként adja vissza."""
     # létrehozza a kapcsolatot
     conn = http.client.HTTPSConnection("api.themoviedb.org")
     payload = "{}"
@@ -258,6 +282,8 @@ def search_tv(title):
 
 
 def search_movie(title):
+    """Filmekre tudunk keresni cím alapján. A cím a bemenő paraméter. A film id-ját, címét, értékelését,
+     első megjelenés dátumát és a rövid leírást adja meg a sorrozatról."""
     # létrehozza a kapcsolatot
     conn = http.client.HTTPSConnection("api.themoviedb.org")
     payload = "{}"
