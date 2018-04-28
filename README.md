@@ -1,14 +1,22 @@
-# SeriesWatch
+SeriesWatch
+===========
 Projekt eszközök beadandó
 
-## Telepítés / Használat
+Tartalomjegyzék
+===============
+* [Telepítés / Használat](#telepítés-/-használat)
+* [Email értesítő](#email-értesítő)
+
+Telepítés / Használat
+=====================
 Telepítsd fel a Python 3-at: https://www.python.org/downloads/
 
 A verziót telepítés után így tudod ellenőrizni:
 ```
 python --version
 ```
-Nyiss egy parancssort/terminált, telepítsd a Django-t és ellenőrizd a verziót (ez opcionális): 
+Nyiss egy parancssort/terminált, telepítsd a Django-t és ellenőrizd a
+verziót (utóbbi opcionális): 
 ```
 pip install django
 python -m django --version
@@ -17,7 +25,7 @@ Ahhoz, hogy működjenek a lekérdezések, mielőtt elindítod a szervert, hozz 
 **conf.cnf** fájlt a **conf_example.cnf** mintájára és ebben add meg az api_key-t
 
 
-Hozd létre az adatbázis és a szükséges adattáblákat a következő parancsokkal:
+Hozd létre az adatbázist és a szükséges adattáblákat a következő parancsokkal:
 ```
 python manage.py makemigrations series
 python manage.py makemigrations
@@ -27,7 +35,7 @@ python manage.py migrate
 ```
 python manage.py createsuperuser
 ```
-_(Teszt fiók létrehozása lejebb)_
+_(Felhasználói teszt fiók létrehozása lejebb)_
 
 A projekt főkönyvtárában (SeriesWatch) a következő paranccsal tudod elindítani a szervert:
 ```
@@ -51,17 +59,14 @@ Quit the server with CONTROL-C.
 A böngésződből itt fogod elérni: http://127.0.0.1:8000/
 
 
-Ez után a http://127.0.0.1:8000/admin felületen a létrehozott fiókkal bejelentkezve a Users táblában tudsz létrehozni teszt fiókokat.
+Ez után a http://127.0.0.1:8000/admin felületen a létrehozott fiókkal
+bejelentkezve a **Users** táblában tudsz létrehozni teszt fiókokat.
 
 
----
-
-Design most már elérhető az index.html-en keresztül, egyelőre nem túl jól működik.
-
----
-
-E-mail értesítés hozzáadva. Használat:
-- A conf-example.cnf mintájára ki kell tölteni a config fáljt a megfelelő adatokkal.
+# Email értesítő
+Használat:
+- A conf-example.cnf mintájára ki kell tölteni az általad létrehozott conf.cnf
+ fáljt a megfelelő adatokkal.
 - Az értesítések kiküldéséhez a parancs:
 ```
 python manage.py sendemails
