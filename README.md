@@ -17,7 +17,7 @@ applikáció tesztelésre.
 Tartalomjegyzék
 ===============
 * [Előzetes követelmények](#előzetes-követelmények)
-* [Telepítés / Használat](#telepítés-/-használat)
+* [Telepítés](#telepítés)
 * [Email értesítő](#email-értesítő)
 
 Előzetes követelmények
@@ -26,8 +26,8 @@ Előzetes követelmények
 * Django keretrendszer
 * TheMovieDb API kulcs
 
-Telepítés / Használat
-=====================
+Telepítés
+=========
 Telepítsd fel a Python 3-at: https://www.python.org/downloads/
 
 Nyiss egy parancssort/terminált és ellenőrizd a verziót:
@@ -99,7 +99,8 @@ felületen a létrehozott fiókkal bejelentkezve a **Users** táblában
 tudsz létrehozni teszt fiókokat.
 
 
-# Email értesítő
+Email értesítő
+==============
 Használat:
 - A conf-example.cnf mintájára ki kell tölteni az általad létrehozott conf.cnf
  fáljt a megfelelő adatokkal.
