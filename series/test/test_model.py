@@ -47,4 +47,3 @@ class ModelTest(TestCase):
         self.assertEqual(sr_table.users.count(), len(users))
 
     # Több ugyanolyan nevű Usert a django nem enged hozzáadni a táblához, így azt nem teszteljük.
-
