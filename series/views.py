@@ -4,6 +4,7 @@
 #
 
 import http.client, urllib.parse, json, configparser, datetime, os
+from multiprocessing.pool import ThreadPool
 from django.core.exceptions import ObjectDoesNotExist
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
@@ -147,8 +148,16 @@ def my_series(request):
     """Visszakapjuk azokat a sorozatokat amelyekre fel vagyunk iratkozva. Használatához bejelentkezés szükséges."""
     series_set = SeriesTable.objects.filter(users__username=request.user.username)
     data = []
+    series_id = []
+    pool = ThreadPool(processes=10)
+    threads = []
     for serie in series_set:
-        data.append(search_tv_by_id(serie.seriesID))
+        threads.append(pool.apply_async(search_tv_by_id, [serie.seriesID]))
+        series_id.append(serie.seriesID)
+
+    for i in threads:
+        data.append(i.get())
+
     return render(request, "series/my-series.html", {"series": data})
 
 
