@@ -212,19 +212,38 @@ def search_tv_by_id(id):
     output_data = {"id": id, "name": json_data["name"], "first_air_date": json_data["first_air_date"],
                    "next_episode_date": "Ismeretlen"}
 
-    link = "/3/tv/" + str(id) + "/season/" + str(last_season_num) + "?"
-    link += urllib.parse.urlencode({"api_key": api_key, "language": language})
-    conn.request("GET", link, payload)
-    res = conn.getresponse()
-    data = res.read()
-    json_data = json.loads(data.decode("utf-8"))
-
-    # formázott stringként adja vissza a dátumot
-    today = datetime.datetime.today().strftime("%Y-%m-%d")
-    for i in json_data["episodes"]:
-        if i["air_date"] >= today:
-            output_data["next_episode_date"] = i["air_date"]
+    # Ha az utolsó évad üres, akkor megnézi az egyel korábbi évadot, de optimalizálási
+    # okok miatt csak az egyel korábbit, ha nem az első évadról van szó
+    first_search = True
+    while first_search or output_data["next_episode_date"] == -1:
+        # Csökkentsük az évadszámot, ha az utolsó üres volt és nem az első évadról van szó
+        if output_data["next_episode_date"] == -1 and last_season_num > 1:
+            last_season_num -= 1
+        # Első évad esetén csak adjunk Ismeretlen-t és lépjünk ki a ciklusból
+        elif output_data["next_episode_date"] == -1:
+            output_data["next_episode_date"] = "Ismeretlen"
             break
+
+        link = "/3/tv/" + str(id) + "/season/" + str(last_season_num) + "?"
+        link += urllib.parse.urlencode({"api_key": api_key, "language": language})
+        conn.request("GET", link, payload)
+        res = conn.getresponse()
+        data = res.read()
+        json_data = json.loads(data.decode("utf-8"))
+
+        # formázott stringként adja vissza a dátumot
+        today = datetime.datetime.today().strftime("%Y-%m-%d")
+
+        # Ellenőrizzük hogy a lekérdezett évad nem üres-e
+        if len(json_data["episodes"]) != 0:
+            for i in json_data["episodes"]:
+                if i["air_date"] >= today:
+                    output_data["next_episode_date"] = i["air_date"]
+                    break
+        # Ha üres és ez volt az első keresés, akkor -1 el újrakezdjük a ciklust
+        elif first_search:
+            output_data["next_episode_date"] = -1
+        first_search = False
 
     return output_data
 
@@ -255,28 +274,8 @@ def search_tv(title):
         "overview": json_data["results"][0]["overview"]
     }
     id = json_data["results"][0]["id"]
-
-    link = "/3/tv/" + str(id) + "?"
-    link += urllib.parse.urlencode({"api_key": api_key, "language": language})
-    conn.request("GET", link, payload)
-    res = conn.getresponse()
-    data = res.read()
-    json_data = json.loads(data.decode("utf-8"))
-    last_season_num = json_data["seasons"][len(json_data["seasons"])-1]["season_number"]
-
-    link = "/3/tv/" + str(id) + "/season/" + str(last_season_num) + "?"
-    link += urllib.parse.urlencode({"api_key": api_key, "language": language})
-    conn.request("GET", link, payload)
-    res = conn.getresponse()
-    data = res.read()
-    json_data = json.loads(data.decode("utf-8"))
-
-    # formázott stringként adja vissza a dátumot
-    today = datetime.datetime.today().strftime("%Y-%m-%d")
-    for i in json_data["episodes"]:
-        if i["air_date"] >= today:
-            output_data["next_episode_date"] = i["air_date"]
-            break
+    tv_data = search_tv_by_id(id)
+    output_data["next_episode_date"] = tv_data["next_episode_date"]
 
     return output_data
 
