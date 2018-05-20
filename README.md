@@ -19,6 +19,7 @@ Tartalomjegyzék
 * [Előzetes követelmények](#előzetes-követelmények)
 * [Telepítés](#telepítés)
 * [Email értesítő](#email-értesítő)
+* [Tesztelés](#tesztelés)
 
 Előzetes követelmények
 ======================
@@ -117,3 +118,22 @@ egyéb hasonló programban állítsd be a futtatást.
 
 A [series.demq.hu](https://series.demq.hu) oldal magyar idő szerint
 minden reggel 6-kor küld értesítő e-maileket.
+
+Tesztelés
+=========
+A projekt főkönyvtárában(.../SeriesWatch) kiadandó parancs:
+```
+python manage.py test
+```
+Ezután egy hasonló üzenetet kéne látnunk a konzolon:
+```
+Creating test database for alias 'default'...
+System check identified no issues (0 silenced).
+..................................................
+----------------------------------------------------------------------
+Ran 50 tests in 9.142s
+
+OK
+Destroying test database for alias 'default'...
+
+```
