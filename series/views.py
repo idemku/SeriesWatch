@@ -32,13 +32,14 @@ def index(request):
         user = "-1"
 
     context = {"id": "", "name": "", "vote_average": "", "first_air_date": "",
-               "next_episode_date": "", "overview": ""}
+               "next_episode_date": "", "overview": "", "is_show": False}
 
     if request.method == "POST":
         try:
             title = request.POST["title"]
             if title != "":
                 context = search_tv(title)
+                context["is_show"] = True
         except IndexError:
             try:
                 context = search_movie(title)

@@ -77,16 +77,20 @@
                   <div class="banner-content text-center" style="padding-bottom: 50px">
                      <h1 class="text-uppercase text-white">Keresés eredménye:</h1>
                      <div class="text-center">
-                         {% if user != "-1" and not user.is_anonymous %}
+                         {% if user != "-1" and not user.is_anonymous and is_show %}
                             <a href="/subscribe/{{ id }}/" class="primary-btn banner-btn">Feliratkozás</a>
+                         {% elif user != "-1" and not user.is_anonymous and id %}
+                            <p class="text-white">Feliratkozni csak sorozatokra lehet</p>
                          {% elif id %}
                             <p class="text-white">A feliratkozáshoz be kell jelentkezned</p>
                          {% endif %}
                         <div class="text-left">
                            <p class="text-uppercase text-white">Cím: {{ name }}</p>
+                           {% if is_show %}
+                               <p class="text-uppercase text-white">Következő epizód megjelenése: {{ next_episode_date }}</p>
+                           {% endif %}
                            <p class="text-uppercase text-white">Értékelés: {{ vote_average }}</p>
                            <p class="text-uppercase text-white">Első megjelenési dátum: {{ first_air_date }}</p>
-                           <p class="text-uppercase text-white">Következő epizód megjelenése: {{ next_episode_date }}</p>
                            <p class="text-uppercase text-white">Leírás: {{ overview }}</p>
                         </div>
                      </div>
