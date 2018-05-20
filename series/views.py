@@ -34,15 +34,20 @@ def index(request):
     context = {"id": "", "name": "", "vote_average": "", "first_air_date": "",
                "next_episode_date": "", "overview": "", "is_show": False}
 
-    if request.method == "POST":
+    if request.method == "POST" or "title" in request.session:
         try:
-            title = request.POST["title"]
+            if request.method == "POST":
+                title = request.POST["title"]
+            else:
+                title = request.session["title"]
             if title != "":
                 context = search_tv(title)
                 context["is_show"] = True
+                request.session["title"] = title
         except IndexError:
             try:
                 context = search_movie(title)
+                request.session["title"] = title
             except IndexError:
                 context["name"] = "Nincs ilyen film/sorozat"
     context["user"] = str(user)
