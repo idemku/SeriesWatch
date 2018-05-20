@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['seriesconfig',['SeriesConfig',['../classseries_1_1apps_1_1_series_config.html',1,'series::apps']]],
-  ['seriestable',['SeriesTable',['../classseries_1_1models_1_1_series_table.html',1,'series::models']]]
+  ['gethinttest',['GetHintTest',['../classseries_1_1test_1_1test__get__hint_1_1_get_hint_test.html',1,'series::test::test_get_hint']]],
+  ['gethinttesttbbt',['GetHintTestTBBT',['../classseries_1_1test_1_1test__get__hint___t_b_b_t_1_1_get_hint_test_t_b_b_t.html',1,'series::test::test_get_hint_TBBT']]]
 ];

@@ -1,0 +1,40 @@
+\hypertarget{series_2urls_8py}{}\section{series/urls.py File Reference}
+\label{series_2urls_8py}\index{series/urls.\+py@{series/urls.\+py}}
+
+
+Itt találhatóak az alkalmazásból elérhető útvonalak.  
+
+
+\subsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+list {\bfseries series.\+urls.\+urlpatterns}
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Itt találhatóak az alkalmazásból elérhető útvonalak. 
+
+
+
+\subsection{Variable Documentation}
+\mbox{\Hypertarget{series_2urls_8py_file_accf1d61481b7b79e14cc01d0626d56eb}\label{series_2urls_8py_file_accf1d61481b7b79e14cc01d0626d56eb}} 
+\index{series/urls.\+py@{series/urls.\+py}!urlpatterns@{urlpatterns}}
+\index{urlpatterns@{urlpatterns}!series/urls.\+py@{series/urls.\+py}}
+\subsubsection{\texorpdfstring{urlpatterns}{urlpatterns}}
+{\footnotesize\ttfamily list series.\+urls.\+urlpatterns}
+
+{\bfseries Initial value\+:}
+\begin{DoxyCode}
+1 =  [
+2     path(\textcolor{stringliteral}{''}, views.index, name=\textcolor{stringliteral}{'index'}),
+3     path(\textcolor{stringliteral}{'login/'}, views.login\_view, name=\textcolor{stringliteral}{'login'}),
+4     path(\textcolor{stringliteral}{'logout/'}, views.logout\_view, name=\textcolor{stringliteral}{'logout'}),
+5     path(\textcolor{stringliteral}{'register/'}, views.register\_view, name=\textcolor{stringliteral}{'register'}),
+6     path(\textcolor{stringliteral}{'myprofile/'}, views.my\_profile, name=\textcolor{stringliteral}{'myprofile'}),
+7     path(\textcolor{stringliteral}{'subscribe/<int:series\_id>/'}, views.subscribe, name=\textcolor{stringliteral}{'subscribe'}),
+8     path(\textcolor{stringliteral}{'unsubscribe/<int:series\_id>/'}, views.unsubscribe, name=\textcolor{stringliteral}{'unsubscribe'}),
+9     path(\textcolor{stringliteral}{'my-series/'}, views.my\_series, name=\textcolor{stringliteral}{'my-series'}),
+10     path(\textcolor{stringliteral}{'get-hint/<str:title>/'}, views.get\_hint, name=\textcolor{stringliteral}{'get-hint'}),
+11 ]
+\end{DoxyCode}

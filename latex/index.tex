@@ -1,0 +1,113 @@
+Projekt eszközök beadandó
+
+{\bfseries Figyelem!}
+
+A program futtatásához szükség van egy \href{https://www.themoviedb.org/faq/api}{\tt {\bfseries T\+H\+E\+M\+O\+V\+I\+E\+DB}-\/s A\+PI kulcsra.} A kulcsot ingyen lehet igényelni a hivatalos weboldalukon, ez viszont regisztráció köteles, ahol meg kell adni néhány személyes információt.
+
+Ezen kulcs hiányában nem fog működni a program, épp ezért a \href{https://series.demq.hu}{\tt series.\+demq.\+hu} weboldalon elérhető az applikáció tesztelésre.
+
+\section*{Tartalomjegyzék }
+
+
+\begin{DoxyItemize}
+\item \href{#előzetes-követelmények}{\tt Előzetes követelmények}
+\item \href{#telepítés}{\tt Telepítés}
+\item \href{#email-értesítő}{\tt Email értesítő}
+\end{DoxyItemize}
+
+\section*{Előzetes követelmények }
+
+
+\begin{DoxyItemize}
+\item Python3
+\item Django keretrendszer
+\item The\+Movie\+Db A\+PI kulcs
+\end{DoxyItemize}
+
+\section*{Telepítés }
+
+Telepítsd fel a Python 3-\/at\+: \href{https://www.python.org/downloads/}{\tt https\+://www.\+python.\+org/downloads/}
+
+Nyiss egy parancssort/terminált és ellenőrizd a verziót\+: 
+\begin{DoxyCode}
+python --version
+\end{DoxyCode}
+ Ez után telepítsd a Django-\/t és ellenőrizd a verziót (ez utóbbi opcionális)\+: 
+\begin{DoxyCode}
+pip install django
+python -m django --version
+\end{DoxyCode}
+
+
+Ha eddig nem tetted, töltsd le a projektet a Githubról.
+
+Hozz létre a projekt főkönyvtárába egy {\bfseries conf.\+cnf} fájlt a {\bfseries conf\+\_\+example.\+cnf} mintájára és ebben add meg a \href{https://www.themoviedb.org}{\tt themoviedb}-\/ről igényelt A\+PI kulcsot.
+
+{\bfseries conf.\+cnf} magyarázat\+:
+
+{\itshape \mbox{[}SW\mbox{]}}
+\begin{DoxyItemize}
+\item api\+Key -\/ \href{https://www.themoviedb.org}{\tt themoviedb}-\/ről igényelt A\+PI kulcs
+\item language -\/ Lekérdezések eredményeinek nyelve
+\end{DoxyItemize}
+
+{\itshape \mbox{[}S\+M\+TP\mbox{]}}
+\begin{DoxyItemize}
+\item server -\/ kimenő e-\/mail szerver címe (ami S\+M\+TP protokollt használ)
+\item port -\/ kimenő e-\/mail szerver portja
+\item email -\/ kimenő e-\/mail cím
+\item user -\/ kimenő e-\/mail címhez tartozó felhasználónév (megegyezhet az email címmel)
+\item passw -\/ kimenő e-\/mailhez tartozó jelszó
+\end{DoxyItemize}
+
+Hozd létre az adatbázist és a szükséges adattáblákat a következő parancsokkal a projekt főkönyvtárában állva\+: 
+\begin{DoxyCode}
+python manage.py makemigrations series
+python manage.py makemigrations
+python manage.py migrate
+\end{DoxyCode}
+ Így tudsz létrehozni admin fiókot\+: 
+\begin{DoxyCode}
+python manage.py createsuperuser
+\end{DoxyCode}
+ \+\_\+(Felhasználói teszt fiók létrehozása lejebb)\+\_\+
+
+A projekt főkönyvtárában a következő paranccsal tudod elindítani a szervert\+: 
+\begin{DoxyCode}
+python manage.py runserver
+\end{DoxyCode}
+ Valami ehhez hasonlót fogsz látni, ha mindent jól csináltál\+: 
+\begin{DoxyCode}
+Performing system checks...
+
+System check identified no issues (0 silenced).
+
+You have unapplied migrations; your app may not work properly until they are applied.
+Run 'python manage.py migrate' to apply them.
+
+March 22, 2018 - 15:50:53
+Django version 2.0, using settings 'mysite.settings'
+Starting development server at http://127.0.0.1:8000/
+Quit the server with CONTROL-C.
+\end{DoxyCode}
+
+
+A böngésződből itt fogod elérni\+: \href{http://127.0.0.1:8000/}{\tt http\+://127.\+0.\+0.\+1\+:8000/}
+
+Ez után a \href{http://127.0.0.1:8000/admin}{\tt http\+://127.\+0.\+0.\+1\+:8000/admin} felületen a létrehozott fiókkal bejelentkezve a {\bfseries Users} táblában tudsz létrehozni teszt fiókokat.
+
+\section*{Email értesítő }
+
+Használat\+:
+\begin{DoxyItemize}
+\item A conf-\/example.\+cnf mintájára ki kell tölteni az általad létrehozott conf.\+cnf fáljt a megfelelő adatokkal.
+\item Az értesítések kiküldéséhez a parancs\+: 
+\begin{DoxyCode}
+python manage.py sendemails
+\end{DoxyCode}
+ Értesítés csak akkor kerül kiküldésre, ha van olyan sorozatra feliratkozás, ami a parancs futtatásának napján jelenik meg. Csak azon sorozatok címei lesznek a levélben, amik épp megjelennek.
+\end{DoxyItemize}
+
+Az automatizáláshoz crontab-\/ra állítsd be a fenti parancsot, Windows-\/os környezetben egyéb hasonló programban állítsd be a futtatást.
+
+A \href{https://series.demq.hu}{\tt series.\+demq.\+hu} oldal magyar idő szerint minden reggel 6-\/kor küld értesítő e-\/maileket. 

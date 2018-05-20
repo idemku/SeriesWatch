@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.14"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>Series watch: Main Page</title>
+<title>Series watch: SeriesWatch</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -62,10 +62,52 @@ $(function() {
 
 <div class="header">
   <div class="headertitle">
-<div class="title">Series watch Documentation</div>  </div>
+<div class="title">SeriesWatch </div>  </div>
 </div><!--header-->
 <div class="contents">
-</div><!-- contents -->
+<div class="textblock"><p>Projekt eszközök beadandó</p>
+<p><b>Figyelem!</b></p>
+<p>A program futtatásához szükség van egy <a href="https://www.themoviedb.org/faq/api"><b>THEMOVIEDB</b>-s API kulcsra.</a> A kulcsot ingyen lehet igényelni a hivatalos weboldalukon, ez viszont regisztráció köteles, ahol meg kell adni néhány személyes információt.</p>
+<p>Ezen kulcs hiányában nem fog működni a program, épp ezért a <a href="https://series.demq.hu">series.demq.hu</a> weboldalon elérhető az applikáció tesztelésre.</p>
+<h1>Tartalomjegyzék </h1>
+<ul>
+<li><a href="#előzetes-követelmények">Előzetes követelmények</a></li>
+<li><a href="#telepítés">Telepítés</a></li>
+<li><a href="#email-értesítő">Email értesítő</a></li>
+</ul>
+<h1>Előzetes követelmények </h1>
+<ul>
+<li>Python3</li>
+<li>Django keretrendszer</li>
+<li>TheMovieDb API kulcs</li>
+</ul>
+<h1>Telepítés </h1>
+<p>Telepítsd fel a Python 3-at: <a href="https://www.python.org/downloads/">https://www.python.org/downloads/</a></p>
+<p>Nyiss egy parancssort/terminált és ellenőrizd a verziót: </p><div class="fragment"><div class="line">python --version</div></div><!-- fragment --><p> Ez után telepítsd a Django-t és ellenőrizd a verziót (ez utóbbi opcionális): </p><div class="fragment"><div class="line">pip install django</div><div class="line">python -m django --version</div></div><!-- fragment --><p>Ha eddig nem tetted, töltsd le a projektet a Githubról.</p>
+<p>Hozz létre a projekt főkönyvtárába egy <b>conf.cnf</b> fájlt a <b>conf_example.cnf</b> mintájára és ebben add meg a <a href="https://www.themoviedb.org">themoviedb</a>-ről igényelt API kulcsot.</p>
+<p><b>conf.cnf</b> magyarázat:</p>
+<p><em>[SW]</em></p><ul>
+<li>apiKey - <a href="https://www.themoviedb.org">themoviedb</a>-ről igényelt API kulcs</li>
+<li>language - Lekérdezések eredményeinek nyelve</li>
+</ul>
+<p><em>[SMTP]</em></p><ul>
+<li>server - kimenő e-mail szerver címe (ami SMTP protokollt használ)</li>
+<li>port - kimenő e-mail szerver portja</li>
+<li>email - kimenő e-mail cím</li>
+<li>user - kimenő e-mail címhez tartozó felhasználónév (megegyezhet az email címmel)</li>
+<li>passw - kimenő e-mailhez tartozó jelszó</li>
+</ul>
+<p>Hozd létre az adatbázist és a szükséges adattáblákat a következő parancsokkal a projekt főkönyvtárában állva: </p><div class="fragment"><div class="line">python manage.py makemigrations series</div><div class="line">python manage.py makemigrations</div><div class="line">python manage.py migrate</div></div><!-- fragment --><p> Így tudsz létrehozni admin fiókot: </p><div class="fragment"><div class="line">python manage.py createsuperuser</div></div><!-- fragment --><p> _(Felhasználói teszt fiók létrehozása lejebb)_</p>
+<p>A projekt főkönyvtárában a következő paranccsal tudod elindítani a szervert: </p><div class="fragment"><div class="line">python manage.py runserver</div></div><!-- fragment --><p> Valami ehhez hasonlót fogsz látni, ha mindent jól csináltál: </p><div class="fragment"><div class="line">Performing system checks...</div><div class="line"></div><div class="line">System check identified no issues (0 silenced).</div><div class="line"></div><div class="line">You have unapplied migrations; your app may not work properly until they are applied.</div><div class="line">Run &#39;python manage.py migrate&#39; to apply them.</div><div class="line"></div><div class="line">March 22, 2018 - 15:50:53</div><div class="line">Django version 2.0, using settings &#39;mysite.settings&#39;</div><div class="line">Starting development server at http://127.0.0.1:8000/</div><div class="line">Quit the server with CONTROL-C.</div></div><!-- fragment --><p>A böngésződből itt fogod elérni: <a href="http://127.0.0.1:8000/">http://127.0.0.1:8000/</a></p>
+<p>Ez után a <a href="http://127.0.0.1:8000/admin">http://127.0.0.1:8000/admin</a> felületen a létrehozott fiókkal bejelentkezve a <b>Users</b> táblában tudsz létrehozni teszt fiókokat.</p>
+<h1>Email értesítő </h1>
+<p>Használat:</p><ul>
+<li>A conf-example.cnf mintájára ki kell tölteni az általad létrehozott conf.cnf fáljt a megfelelő adatokkal.</li>
+<li>Az értesítések kiküldéséhez a parancs: <div class="fragment"><div class="line">python manage.py sendemails</div></div><!-- fragment --> Értesítés csak akkor kerül kiküldésre, ha van olyan sorozatra feliratkozás, ami a parancs futtatásának napján jelenik meg. Csak azon sorozatok címei lesznek a levélben, amik épp megjelennek.</li>
+</ul>
+<p>Az automatizáláshoz crontab-ra állítsd be a fenti parancsot, Windows-os környezetben egyéb hasonló programban állítsd be a futtatást.</p>
+<p>A <a href="https://series.demq.hu">series.demq.hu</a> oldal magyar idő szerint minden reggel 6-kor küld értesítő e-maileket. </p>
+</div></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
 Generated by &#160;<a href="http://www.doxygen.org/index.html">
