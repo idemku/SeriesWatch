@@ -1,0 +1,152 @@
+\hypertarget{views_8py}{}\section{series/views.py File Reference}
+\label{views_8py}\index{series/views.\+py@{series/views.\+py}}
+
+
+File documentation.  
+
+
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+def \mbox{\hyperlink{views_8py_a17c28f1bd4f815bfcc6efb8329adf8ce}{series.\+views.\+index}} (request)
+\item 
+def \mbox{\hyperlink{views_8py_a3de96e84eb30bbddc08f9b0a1de75097}{series.\+views.\+login\+\_\+view}} (request)
+\item 
+def \mbox{\hyperlink{views_8py_afd8aea231dc54889b3c9f13e6c620bff}{series.\+views.\+logout\+\_\+view}} (request)
+\item 
+def \mbox{\hyperlink{views_8py_ab9fe0f9b9f8e9ec444c27490a14029ff}{series.\+views.\+register\+\_\+view}} (request)
+\item 
+def \mbox{\hyperlink{views_8py_ab7db67185dfdb914e52f8a445e9e5f37}{series.\+views.\+subscribe}} (request, series\+\_\+id)
+\item 
+def \mbox{\hyperlink{views_8py_ac76fbee584dccacf7a97e08554b0d8d4}{series.\+views.\+unsubscribe}} (request, series\+\_\+id)
+\item 
+def \mbox{\hyperlink{views_8py_ac3ae707673449d5cf027d343b906db33}{series.\+views.\+my\+\_\+series}} (request)
+\item 
+def \mbox{\hyperlink{views_8py_ab0f46a36c19bc5b0bf212efbf2db4a4e}{series.\+views.\+my\+\_\+profile}} (request)
+\item 
+def \mbox{\hyperlink{views_8py_aa8152444da0249d07adb69b31b7fbc66}{series.\+views.\+get\+\_\+hint}} (request, title)
+\item 
+def \mbox{\hyperlink{views_8py_ac340990bd9e822c873fca4e92288e531}{series.\+views.\+search\+\_\+tv\+\_\+by\+\_\+id}} (id)
+\item 
+def \mbox{\hyperlink{views_8py_aa7b1305d2cac5a82e41f93c41238a3ac}{series.\+views.\+search\+\_\+tv}} (title)
+\item 
+def \mbox{\hyperlink{views_8py_aa464a00cddc8c4c518d37f5cf9090e71}{series.\+views.\+search\+\_\+movie}} (title)
+\end{DoxyCompactItemize}
+\subsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{views_8py_ab6aa447cbe65b77bff8e2cb7e8c32484}\label{views_8py_ab6aa447cbe65b77bff8e2cb7e8c32484}} 
+{\bfseries series.\+views.\+B\+A\+S\+E\+\_\+\+D\+IR} = os.\+path.\+dirname(os.\+path.\+dirname(os.\+path.\+abspath(\+\_\+\+\_\+file\+\_\+\+\_\+)))
+\item 
+\mbox{\Hypertarget{views_8py_ac100c10f0a0036bce70e3be6b24b0746}\label{views_8py_ac100c10f0a0036bce70e3be6b24b0746}} 
+{\bfseries series.\+views.\+config} = configparser.\+Config\+Parser()
+\item 
+\mbox{\Hypertarget{views_8py_a8f6216ab989cb7833ec861a55a0ddc3f}\label{views_8py_a8f6216ab989cb7833ec861a55a0ddc3f}} 
+{\bfseries series.\+views.\+api\+\_\+key} = config\mbox{[}\char`\"{}SW\char`\"{}\mbox{]}\mbox{[}\char`\"{}api\+Key\char`\"{}\mbox{]}
+\item 
+\mbox{\Hypertarget{views_8py_ad1f7bb9d07d6a73ba567ab67ac4fb9bb}\label{views_8py_ad1f7bb9d07d6a73ba567ab67ac4fb9bb}} 
+{\bfseries series.\+views.\+language} = config\mbox{[}\char`\"{}SW\char`\"{}\mbox{]}\mbox{[}\char`\"{}language\char`\"{}\mbox{]}
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+File documentation. 
+
+
+
+\subsection{Function Documentation}
+\mbox{\Hypertarget{views_8py_file_aa8152444da0249d07adb69b31b7fbc66}\label{views_8py_file_aa8152444da0249d07adb69b31b7fbc66}} 
+\index{views.\+py@{views.\+py}!get\+\_\+hint@{get\+\_\+hint}}
+\index{get\+\_\+hint@{get\+\_\+hint}!views.\+py@{views.\+py}}
+\subsubsection{\texorpdfstring{get\+\_\+hint()}{get\_hint()}}
+{\footnotesize\ttfamily def series.\+views.\+get\+\_\+hint (\begin{DoxyParamCaption}\item[{}]{request,  }\item[{}]{title }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Ha elkezdjük gépelni a sorozat címét a keresőbe, ennek a függvénynek a segítségével kapjuk vissza a tippeket.\end{DoxyVerb}
+ \mbox{\Hypertarget{views_8py_file_a17c28f1bd4f815bfcc6efb8329adf8ce}\label{views_8py_file_a17c28f1bd4f815bfcc6efb8329adf8ce}} 
+\index{views.\+py@{views.\+py}!index@{index}}
+\index{index@{index}!views.\+py@{views.\+py}}
+\subsubsection{\texorpdfstring{index()}{index()}}
+{\footnotesize\ttfamily def series.\+views.\+index (\begin{DoxyParamCaption}\item[{}]{request }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Függvény amely a főoldal betöltődésekor fut le. Ez függvény POST metódussal kéri le a sorozatok/filmek adatait.
+ GET hívásnál hibát jelez.\end{DoxyVerb}
+ \mbox{\Hypertarget{views_8py_file_a3de96e84eb30bbddc08f9b0a1de75097}\label{views_8py_file_a3de96e84eb30bbddc08f9b0a1de75097}} 
+\index{views.\+py@{views.\+py}!login\+\_\+view@{login\+\_\+view}}
+\index{login\+\_\+view@{login\+\_\+view}!views.\+py@{views.\+py}}
+\subsubsection{\texorpdfstring{login\+\_\+view()}{login\_view()}}
+{\footnotesize\ttfamily def series.\+views.\+login\+\_\+view (\begin{DoxyParamCaption}\item[{}]{request }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Ez a függvény a bejelentkezésért felel. A POST kérésben van a felhásználónév és a jelszó.\end{DoxyVerb}
+ \mbox{\Hypertarget{views_8py_file_afd8aea231dc54889b3c9f13e6c620bff}\label{views_8py_file_afd8aea231dc54889b3c9f13e6c620bff}} 
+\index{views.\+py@{views.\+py}!logout\+\_\+view@{logout\+\_\+view}}
+\index{logout\+\_\+view@{logout\+\_\+view}!views.\+py@{views.\+py}}
+\subsubsection{\texorpdfstring{logout\+\_\+view()}{logout\_view()}}
+{\footnotesize\ttfamily def series.\+views.\+logout\+\_\+view (\begin{DoxyParamCaption}\item[{}]{request }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Ez a függvény a kijelentkezést hajtja végre.\end{DoxyVerb}
+ \mbox{\Hypertarget{views_8py_file_ab0f46a36c19bc5b0bf212efbf2db4a4e}\label{views_8py_file_ab0f46a36c19bc5b0bf212efbf2db4a4e}} 
+\index{views.\+py@{views.\+py}!my\+\_\+profile@{my\+\_\+profile}}
+\index{my\+\_\+profile@{my\+\_\+profile}!views.\+py@{views.\+py}}
+\subsubsection{\texorpdfstring{my\+\_\+profile()}{my\_profile()}}
+{\footnotesize\ttfamily def series.\+views.\+my\+\_\+profile (\begin{DoxyParamCaption}\item[{}]{request }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Saját proflunk adatait jeleníti meg. Használatához bejelentkezés szükséges.\end{DoxyVerb}
+ \mbox{\Hypertarget{views_8py_file_ac3ae707673449d5cf027d343b906db33}\label{views_8py_file_ac3ae707673449d5cf027d343b906db33}} 
+\index{views.\+py@{views.\+py}!my\+\_\+series@{my\+\_\+series}}
+\index{my\+\_\+series@{my\+\_\+series}!views.\+py@{views.\+py}}
+\subsubsection{\texorpdfstring{my\+\_\+series()}{my\_series()}}
+{\footnotesize\ttfamily def series.\+views.\+my\+\_\+series (\begin{DoxyParamCaption}\item[{}]{request }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Visszakapjuk azokat a sorozatokat amelyekre fel vagyunk iratkozva. Használatához bejelentkezés szükséges.\end{DoxyVerb}
+ \mbox{\Hypertarget{views_8py_file_ab9fe0f9b9f8e9ec444c27490a14029ff}\label{views_8py_file_ab9fe0f9b9f8e9ec444c27490a14029ff}} 
+\index{views.\+py@{views.\+py}!register\+\_\+view@{register\+\_\+view}}
+\index{register\+\_\+view@{register\+\_\+view}!views.\+py@{views.\+py}}
+\subsubsection{\texorpdfstring{register\+\_\+view()}{register\_view()}}
+{\footnotesize\ttfamily def series.\+views.\+register\+\_\+view (\begin{DoxyParamCaption}\item[{}]{request }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Ez a függvény a regisztrációért felel. Ellenőrizzük, hogy a megadott 2 jelszó egyezik-e, illetve,
+hogy létezik-e már ilyen felhasználó.
+Felhasználónevet, e-mail címet és a jelszót kell megadni a regisztráláshoz.\end{DoxyVerb}
+ \mbox{\Hypertarget{views_8py_file_aa464a00cddc8c4c518d37f5cf9090e71}\label{views_8py_file_aa464a00cddc8c4c518d37f5cf9090e71}} 
+\index{views.\+py@{views.\+py}!search\+\_\+movie@{search\+\_\+movie}}
+\index{search\+\_\+movie@{search\+\_\+movie}!views.\+py@{views.\+py}}
+\subsubsection{\texorpdfstring{search\+\_\+movie()}{search\_movie()}}
+{\footnotesize\ttfamily def series.\+views.\+search\+\_\+movie (\begin{DoxyParamCaption}\item[{}]{title }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Filmekre tudunk keresni cím alapján. A cím a bemenő paraméter. A film id-ját, címét, értékelését,
+ első megjelenés dátumát és a rövid leírást adja meg a sorrozatról.\end{DoxyVerb}
+ \mbox{\Hypertarget{views_8py_file_aa7b1305d2cac5a82e41f93c41238a3ac}\label{views_8py_file_aa7b1305d2cac5a82e41f93c41238a3ac}} 
+\index{views.\+py@{views.\+py}!search\+\_\+tv@{search\+\_\+tv}}
+\index{search\+\_\+tv@{search\+\_\+tv}!views.\+py@{views.\+py}}
+\subsubsection{\texorpdfstring{search\+\_\+tv()}{search\_tv()}}
+{\footnotesize\ttfamily def series.\+views.\+search\+\_\+tv (\begin{DoxyParamCaption}\item[{}]{title }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Sorozatokra tudunk keresni cím alapján. A sorozat id-ját, címét, értékelését, első megjelenés dátumát,
+ következő epizód dátumát és a rövid leírást adja meg a sorrozatról.
+A cím a bemenő paraméter. A dátumokat formázott stringként adja vissza.\end{DoxyVerb}
+ \mbox{\Hypertarget{views_8py_file_ac340990bd9e822c873fca4e92288e531}\label{views_8py_file_ac340990bd9e822c873fca4e92288e531}} 
+\index{views.\+py@{views.\+py}!search\+\_\+tv\+\_\+by\+\_\+id@{search\+\_\+tv\+\_\+by\+\_\+id}}
+\index{search\+\_\+tv\+\_\+by\+\_\+id@{search\+\_\+tv\+\_\+by\+\_\+id}!views.\+py@{views.\+py}}
+\subsubsection{\texorpdfstring{search\+\_\+tv\+\_\+by\+\_\+id()}{search\_tv\_by\_id()}}
+{\footnotesize\ttfamily def series.\+views.\+search\+\_\+tv\+\_\+by\+\_\+id (\begin{DoxyParamCaption}\item[{}]{id }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Sorozatokra tudunk keresni id alapján. A sorozat id-ját, címét, értékelését, első megjelenés dátumát,
+ következő epizód dátumát és a rövid leírást adja meg a sorrozatról.
+Az id a bemenő paraméter. A dátumokat formázott stringként adja vissza.\end{DoxyVerb}
+ \mbox{\Hypertarget{views_8py_file_ab7db67185dfdb914e52f8a445e9e5f37}\label{views_8py_file_ab7db67185dfdb914e52f8a445e9e5f37}} 
+\index{views.\+py@{views.\+py}!subscribe@{subscribe}}
+\index{subscribe@{subscribe}!views.\+py@{views.\+py}}
+\subsubsection{\texorpdfstring{subscribe()}{subscribe()}}
+{\footnotesize\ttfamily def series.\+views.\+subscribe (\begin{DoxyParamCaption}\item[{}]{request,  }\item[{}]{series\+\_\+id }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Itt tudunk feliratkozni sorozatokra. Ellenőrzi, hogy létezik-e a megadott azonosítóval sorozat,
+ hibás azonosító esetén visszairányít a főoldalra, ha minden rendben lefut
+akkor is a főoldalra irányít. A feliratkozás használatához bejelentkezés szükséges.\end{DoxyVerb}
+ \mbox{\Hypertarget{views_8py_file_ac76fbee584dccacf7a97e08554b0d8d4}\label{views_8py_file_ac76fbee584dccacf7a97e08554b0d8d4}} 
+\index{views.\+py@{views.\+py}!unsubscribe@{unsubscribe}}
+\index{unsubscribe@{unsubscribe}!views.\+py@{views.\+py}}
+\subsubsection{\texorpdfstring{unsubscribe()}{unsubscribe()}}
+{\footnotesize\ttfamily def series.\+views.\+unsubscribe (\begin{DoxyParamCaption}\item[{}]{request,  }\item[{}]{series\+\_\+id }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Sorozatról tudunk leiratkozni. Használatához bejelentkezés szükséges.\end{DoxyVerb}
+ 
